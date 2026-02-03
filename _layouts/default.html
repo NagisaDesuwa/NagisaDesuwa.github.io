@@ -1,0 +1,38 @@
+---
+layout: compress
+---
+
+{% include base_path %}
+
+<!doctype html>
+<html lang="{{ site.locale | slice: 0,2 }}" class="no-js"{% if site.site_theme == "dark" %} data-theme="dark"{% endif %}>
+  <head>
+    {% include head.html %}
+    {% include head/custom.html %}
+  </head>
+
+  <body>
+    {% include entrance-gate.html %}
+
+    {% include browser-upgrade.html %}
+    {% include masthead.html %}
+    {% include hero-banner.html %}
+
+    <div id="main" role="main">
+      <div class="archive" style="width: 100%; max-width: 1280px; margin: 0 auto; padding: 2em;">
+        {{ content }}
+      </div>
+    </div>
+
+    <div class="page__footer">
+      <footer>
+        {% include footer/custom.html %}
+        {% include footer.html %}
+      </footer>
+    </div>
+
+    {% include music-player.html %}
+    {% include scripts.html %}
+
+  </body>
+</html>

@@ -1,0 +1,11 @@
+{
+	"name": "Nagisa的小屋",
+	"icons": [
+		{
+			"src": "/images/profile.png",
+			"sizes": "any",
+			"type": "image/png",
+			"purpose": "any maskable"
+		}
+	]
+}

@@ -1,0 +1,189 @@
+<!-- 自定义鼠标效果 -->
+<div class="cursor-dot"></div>
+<div class="cursor-outline"></div>
+
+<script>
+(function() {
+  // 检查是否为移动设备
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    console.log('移动设备，跳过自定义光标效果');
+    return;
+  }
+
+  // 获取光标元素
+  const cursorDot = document.querySelector('.cursor-dot');
+  const cursorOutline = document.querySelector('.cursor-outline');
+
+  let mouseX = 0, mouseY = 0;
+  let dotX = 0, dotY = 0;
+  let outlineX = 0, outlineY = 0;
+  let isDragging = false;
+  let cursorTrailEnabled = true;
+  let clickRippleEnabled = true;
+  let lastTrailTime = 0;
+
+  // 从localStorage加载设置
+  function loadSettings() {
+    const cursorStyle = localStorage.getItem('cursorStyle') || 'default';
+    const trailEnabled = localStorage.getItem('cursorTrailEnabled');
+    const rippleEnabled = localStorage.getItem('cursorRippleEnabled');
+
+    cursorTrailEnabled = trailEnabled !== 'false';
+    clickRippleEnabled = rippleEnabled !== 'false';
+
+    applyCursorStyle(cursorStyle);
+  }
+
+  // 应用光标样式
+  function applyCursorStyle(style) {
+    document.body.classList.remove('cursor-default', 'cursor-dot-style', 'cursor-arrow-enhanced');
+
+    switch(style) {
+      case 'dot':
+        document.body.classList.add('cursor-dot-style');
+        cursorDot.classList.add('active');
+        cursorOutline.classList.add('active');
+        break;
+      case 'arrow-enhanced':
+        document.body.classList.add('cursor-arrow-enhanced');
+        cursorDot.classList.remove('active');
+        cursorOutline.classList.remove('active');
+        break;
+      default:
+        document.body.classList.add('cursor-default');
+        cursorDot.classList.remove('active');
+        cursorOutline.classList.remove('active');
+    }
+
+    localStorage.setItem('cursorStyle', style);
+  }
+
+  // 鼠标移动事件
+  document.addEventListener('mousemove', function(e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    // 添加拖尾效果
+    const now = Date.now();
+    if (cursorTrailEnabled && now - lastTrailTime > 30) {
+      createTrail(mouseX, mouseY);
+      lastTrailTime = now;
+    }
+  });
+
+  // 平滑跟随动画
+  function animateCursor() {
+    // 光标点快速跟随
+    const dotSpeed = 0.15;
+    dotX += (mouseX - dotX) * dotSpeed;
+    dotY += (mouseY - dotY) * dotSpeed;
+
+    // 外圈缓慢跟随
+    const outlineSpeed = 0.08;
+    outlineX += (mouseX - outlineX) * outlineSpeed;
+    outlineY += (mouseY - outlineY) * outlineSpeed;
+
+    cursorDot.style.left = dotX + 'px';
+    cursorDot.style.top = dotY + 'px';
+    cursorOutline.style.left = outlineX + 'px';
+    cursorOutline.style.top = outlineY + 'px';
+
+    requestAnimationFrame(animateCursor);
+  }
+
+  animateCursor();
+
+  // 鼠标按下事件
+  document.addEventListener('mousedown', function(e) {
+    isDragging = true;
+    document.body.classList.add('dragging');
+    cursorDot.classList.add('clicking');
+    cursorOutline.classList.add('clicking');
+
+    // 创建点击波纹
+    if (clickRippleEnabled) {
+      createRipple(e.clientX, e.clientY);
+    }
+  });
+
+  // 鼠标抬起事件
+  document.addEventListener('mouseup', function() {
+    isDragging = false;
+    document.body.classList.remove('dragging');
+    cursorDot.classList.remove('clicking');
+    cursorOutline.classList.remove('clicking');
+  });
+
+  // 悬停在可点击元素上
+  const hoverTargets = 'a, button, .clickable, input, textarea, select';
+
+  document.addEventListener('mouseover', function(e) {
+    if (e.target.matches(hoverTargets)) {
+      cursorDot.classList.add('hovering');
+      cursorOutline.classList.add('hovering');
+    }
+  });
+
+  document.addEventListener('mouseout', function(e) {
+    if (e.target.matches(hoverTargets)) {
+      cursorDot.classList.remove('hovering');
+      cursorOutline.classList.remove('hovering');
+    }
+  });
+
+  // 创建点击波纹效果
+  function createRipple(x, y) {
+    const ripple = document.createElement('div');
+    ripple.className = 'click-ripple';
+    ripple.style.left = (x - 50) + 'px';
+    ripple.style.top = (y - 50) + 'px';
+    document.body.appendChild(ripple);
+
+    setTimeout(() => {
+      ripple.remove();
+    }, 800);
+  }
+
+  // 创建鼠标拖尾效果
+  function createTrail(x, y) {
+    const trail = document.createElement('div');
+    trail.className = 'cursor-trail';
+    trail.style.left = x + 'px';
+    trail.style.top = y + 'px';
+    document.body.appendChild(trail);
+
+    setTimeout(() => {
+      trail.remove();
+    }, 600);
+  }
+
+  // 暴露设置函数供配置面板使用
+  window.cursorEffects = {
+    setStyle: applyCursorStyle,
+    setTrail: function(enabled) {
+      cursorTrailEnabled = enabled;
+      localStorage.setItem('cursorTrailEnabled', enabled);
+    },
+    setRipple: function(enabled) {
+      clickRippleEnabled = enabled;
+      localStorage.setItem('cursorRippleEnabled', enabled);
+    },
+    getTrailEnabled: function() {
+      return cursorTrailEnabled;
+    },
+    getRippleEnabled: function() {
+      return clickRippleEnabled;
+    },
+    getCurrentStyle: function() {
+      return localStorage.getItem('cursorStyle') || 'default';
+    }
+  };
+
+  // 加载保存的设置
+  loadSettings();
+
+  console.log('✨ 自定义鼠标效果已加载');
+})();
+</script>

@@ -1,0 +1,24 @@
+{% include base_path %}
+
+{% if page.header.image or page.header.overlay_image or site.header.image %}
+<div class="page__hero"
+     style="{% if page.header.overlay_color %}background-color: {{ page.header.overlay_color }};{% endif %}
+            {% if page.header.image %}background-image: linear-gradient(rgba(0, 0, 0, {{ page.header.overlay_filter | default: 0.3 }}), rgba(0, 0, 0, {{ page.header.overlay_filter | default: 0.3 }})), url('{% if page.header.image contains "://" %}{{ page.header.image }}{% else %}{{ page.header.image | prepend: base_path }}{% endif %}');{% endif %}
+            {% if page.header.overlay_image %}background-image: linear-gradient(rgba(0, 0, 0, {{ page.header.overlay_filter | default: 0.5 }}), rgba(0, 0, 0, {{ page.header.overlay_filter | default: 0.5 }})), url('{% if page.header.overlay_image contains "://" %}{{ page.header.overlay_image }}{% else %}{{ page.header.overlay_image | prepend: base_path }}{% endif %}');{% endif %}
+            {% if site.header.image and page.url == '/' %}background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('{% if site.header.image contains "://" %}{{ site.header.image }}{% else %}{{ site.header.image | prepend: base_path }}{% endif %}');{% endif %}">
+
+  <div class="wrapper">
+    <h1 class="page__title" itemprop="headline">
+      {% if page.header.show_overlay_title != false %}
+        {{ page.title | default: site.title }}
+      {% endif %}
+    </h1>
+    {% if page.header.show_overlay_excerpt != false and page.excerpt %}
+      <p class="page__lead">{{ page.excerpt | markdownify | remove: "<p>" | remove: "</p>" }}</p>
+    {% endif %}
+    {% if page.header.cta_url %}
+      <p><a href="{{ page.header.cta_url }}" class="btn btn--light-outline btn--large">{{ page.header.cta_label | default: "了解更多" }}</a></p>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
