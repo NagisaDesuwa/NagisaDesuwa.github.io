@@ -12,26 +12,66 @@
 (function() {
   console.log('🚪 入口大门脚本开始执行');
 
-  var gate = document.getElementById('entrance-gate');
-
-  if (!gate) {
-    console.error('❌ 找不到入口大门元素');
-    return;
-  }
-
-  console.log('✅ 找到入口大门元素');
-
   /* 检查是否在同一浏览器会话中已访问过 */
   var hasVisited = sessionStorage.getItem('hasVisited');
 
   if (hasVisited) {
     /* 如果已访问过，直接隐藏入口页面 */
     console.log('👋 已访问过，隐藏入口大门');
-    gate.style.display = 'none';
+    var gate = document.getElementById('entrance-gate');
+    if (gate) {
+      gate.style.display = 'none';
+    }
     return;
   }
 
   console.log('🆕 首次访问，显示入口大门');
+
+  /* 首次访问时，隐藏页面内容并显示大门 */
+  document.body.classList.add('page-hidden');
+
+  var gate = document.getElementById('entrance-gate');
+
+  if (!gate) {
+    console.error('❌ 找不到入口大门元素，直接显示页面');
+    /* 如果找不到大门元素，立即显示页面内容 */
+    document.body.classList.remove('page-hidden');
+    return;
+  }
+
+  console.log('✅ 找到入口大门元素');
+
+  /* 显示入口大门时禁用页面滚动 */
+  document.body.classList.add('gate-active');
+
+  /* 安全机制：10秒后如果用户还没点击，自动显示页面 */
+  var safetyTimeout = setTimeout(function() {
+    console.log('⚠️ 安全超时：自动显示页面');
+    gate.classList.add('fade-out');
+    setTimeout(function() {
+      showPage();
+    }, 400);
+  }, 10000);
+
+  /* 显示页面的函数 */
+  function showPage() {
+    sessionStorage.setItem('hasVisited', 'true');
+    document.body.classList.remove('gate-active');
+    document.body.classList.remove('page-hidden');
+    document.body.classList.add('page-show');
+    console.log('✨ 页面内容开始渐入显示');
+
+    /* 大门会继续渐隐，等完全消失后再隐藏 */
+    setTimeout(function() {
+      gate.style.display = 'none';
+    }, 600);
+
+    /* 渐入动画完成后移除动画class */
+    setTimeout(function() {
+      document.body.classList.remove('page-show');
+      console.log('✅ 页面完全显示');
+    }, 1500); /* 与CSS动画时长一致 */
+  }
 
   /* 新的浏览器会话，重置音乐播放状态 */
   /* 清除所有音乐相关的 localStorage，让播放器加载默认歌曲 */
@@ -43,6 +83,8 @@
 
   /* 点击后渐隐进入网站并启动音乐 */
   gate.addEventListener('click', function(e) {
+    /* 清除安全超时 */
+    clearTimeout(safetyTimeout);
     console.log('🖱️ 入口大门被点击！', e.target);
     gate.classList.add('fade-out');
 
@@ -82,11 +124,11 @@
     /* 开始尝试播放（最多5次） */
     setTimeout(function() { tryPlayMusic(5); }, 100);
 
-    /* 动画结束后隐藏元素并标记已访问 */
+    /* 0.4秒后开始页面渐入，与大门渐隐形成交叉效果 */
     setTimeout(function() {
-      gate.style.display = 'none';
-      sessionStorage.setItem('hasVisited', 'true');
-    }, 1000); /* 1秒渐隐动画 */
+      console.log('🌟 开始页面渐入动画（大门仍在渐隐）');
+      showPage();
+    }, 400); /* 在大门渐隐到40%时开始页面渐入 */
   });
 
   /* 添加鼠标悬停效果 */

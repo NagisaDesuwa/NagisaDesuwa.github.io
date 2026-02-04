@@ -5,6 +5,42 @@
 /* ========================================
    网站入口大门效果
    ======================================== */
+
+/* 入口大门显示时隐藏滚动条 */
+body.gate-active {
+    overflow: hidden;
+}
+
+/* 页面内容初始隐藏状态 */
+body.page-hidden {
+    overflow: hidden;
+}
+
+/* 隐藏除了大门以外的所有内容 */
+body.page-hidden > *:not(#entrance-gate):not(script):not(style) {
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
+/* 页面内容渐入动画 */
+body.page-show {
+    animation: pageReveal 1.5s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+}
+
+@keyframes pageReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+    }
+    60% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
 .entrance-gate {
     position: fixed;
     top: 0;
