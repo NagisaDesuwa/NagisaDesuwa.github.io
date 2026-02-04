@@ -36,6 +36,7 @@
     background: transparent;
     z-index: 1;
     transition: background 0.5s ease;
+    pointer-events: none; /* 允许点击穿透到父元素 */
 }
 
 .entrance-gate.hover .gate-overlay {
@@ -50,6 +51,7 @@
     padding: 2em;
     transform: translateY(0);
     transition: transform 0.3s ease;
+    pointer-events: none; /* 允许点击穿透到父元素 */
 }
 
 .entrance-gate.hover .gate-content {
