@@ -1,0 +1,42 @@
+# 鼠标特效配置文件
+# 此配置仅在服务器端生效，用户无法修改
+
+# 基础设置
+enabled: true  # 是否启用鼠标特效（移动端会自动禁用）
+
+# 光标样式：default（默认）, dot（圆点跟随）, arrow-enhanced（增强箭头）
+cursor_style: dot
+
+# 拖尾效果配置
+trail:
+  enabled: true           # 是否启用拖尾效果
+  interval: 30           # 拖尾生成间隔（毫秒），越小拖尾越密集
+  lifetime: 600          # 拖尾存在时间（毫秒）
+  size: 4                # 拖尾大小（像素）
+  color: "rgba(99, 102, 241, 0.5)"  # 拖尾颜色
+  blur: 2                # 模糊程度（像素）
+
+# 点击波纹效果配置
+ripple:
+  enabled: true          # 是否启用点击波纹
+  size: 100              # 波纹大小（像素）
+  duration: 800          # 波纹持续时间（毫秒）
+  color: "rgba(99, 102, 241, 0.3)"  # 波纹颜色
+
+# 光标跟随速度
+cursor_speed:
+  dot: 0.15              # 光标点跟随速度（0-1之间，越大越快）
+  outline: 0.08          # 外圈跟随速度（0-1之间，越大越快）
+
+# 光标大小
+cursor_size:
+  dot: 8                 # 光标点大小（像素）
+  outline: 32            # 外圈大小（像素）
+  dot_color: "#6366f1"   # 光标点颜色
+  outline_color: "rgba(99, 102, 241, 0.3)"  # 外圈颜色
+
+# 高级设置
+advanced:
+  hover_scale: 1.5       # 悬停在可点击元素上的放大倍数
+  click_scale: 0.8       # 点击时的缩小倍数
+  transition_speed: 200  # 变换速度（毫秒）

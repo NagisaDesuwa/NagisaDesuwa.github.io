@@ -1,14 +1,79 @@
-<!-- 自定义鼠标效果 -->
+{% if site.data.cursor-config.enabled %}
+<!-- 自定义鼠标效果 - 服务器端配置 -->
 <div class="cursor-dot"></div>
 <div class="cursor-outline"></div>
 
+<style>
+/* 动态注入配置样式 */
+.cursor-dot {
+  width: {{ site.data.cursor-config.cursor_size.dot }}px;
+  height: {{ site.data.cursor-config.cursor_size.dot }}px;
+  background-color: {{ site.data.cursor-config.cursor_size.dot_color }};
+  transition: transform {{ site.data.cursor-config.advanced.transition_speed }}ms ease;
+}
+
+.cursor-outline {
+  width: {{ site.data.cursor-config.cursor_size.outline }}px;
+  height: {{ site.data.cursor-config.cursor_size.outline }}px;
+  border: 2px solid {{ site.data.cursor-config.cursor_size.outline_color }};
+  transition: transform {{ site.data.cursor-config.advanced.transition_speed }}ms ease;
+}
+
+.cursor-dot.hovering {
+  transform: scale({{ site.data.cursor-config.advanced.hover_scale }});
+}
+
+.cursor-outline.hovering {
+  transform: scale({{ site.data.cursor-config.advanced.hover_scale }});
+}
+
+.cursor-dot.clicking {
+  transform: scale({{ site.data.cursor-config.advanced.click_scale }});
+}
+
+.cursor-outline.clicking {
+  transform: scale({{ site.data.cursor-config.advanced.click_scale }});
+}
+
+.cursor-trail {
+  width: {{ site.data.cursor-config.trail.size }}px;
+  height: {{ site.data.cursor-config.trail.size }}px;
+  background-color: {{ site.data.cursor-config.trail.color }};
+  filter: blur({{ site.data.cursor-config.trail.blur }}px);
+}
+
+.click-ripple {
+  width: {{ site.data.cursor-config.ripple.size }}px;
+  height: {{ site.data.cursor-config.ripple.size }}px;
+  border: 2px solid {{ site.data.cursor-config.ripple.color }};
+  animation: ripple-animation {{ site.data.cursor-config.ripple.duration }}ms ease-out;
+}
+</style>
+
 <script>
 (function() {
+  // 服务器端配置（用户无法修改）
+  const CONFIG = {
+    cursorStyle: '{{ site.data.cursor-config.cursor_style }}',
+    trail: {
+      enabled: {{ site.data.cursor-config.trail.enabled }},
+      interval: {{ site.data.cursor-config.trail.interval }},
+      lifetime: {{ site.data.cursor-config.trail.lifetime }}
+    },
+    ripple: {
+      enabled: {{ site.data.cursor-config.ripple.enabled }},
+      duration: {{ site.data.cursor-config.ripple.duration }}
+    },
+    speed: {
+      dot: {{ site.data.cursor-config.cursor_speed.dot }},
+      outline: {{ site.data.cursor-config.cursor_speed.outline }}
+    }
+  };
+
   // 检查是否为移动设备
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
   if (isMobile) {
-    console.log('移动设备，跳过自定义光标效果');
     return;
   }
 
@@ -16,31 +81,18 @@
   const cursorDot = document.querySelector('.cursor-dot');
   const cursorOutline = document.querySelector('.cursor-outline');
 
+  if (!cursorDot || !cursorOutline) return;
+
   let mouseX = 0, mouseY = 0;
   let dotX = 0, dotY = 0;
   let outlineX = 0, outlineY = 0;
-  let isDragging = false;
-  let cursorTrailEnabled = true;
-  let clickRippleEnabled = true;
   let lastTrailTime = 0;
 
-  // 从localStorage加载设置
-  function loadSettings() {
-    const cursorStyle = localStorage.getItem('cursorStyle') || 'default';
-    const trailEnabled = localStorage.getItem('cursorTrailEnabled');
-    const rippleEnabled = localStorage.getItem('cursorRippleEnabled');
-
-    cursorTrailEnabled = trailEnabled !== 'false';
-    clickRippleEnabled = rippleEnabled !== 'false';
-
-    applyCursorStyle(cursorStyle);
-  }
-
-  // 应用光标样式
-  function applyCursorStyle(style) {
+  // 应用配置的光标样式
+  function applyCursorStyle() {
     document.body.classList.remove('cursor-default', 'cursor-dot-style', 'cursor-arrow-enhanced');
 
-    switch(style) {
+    switch(CONFIG.cursorStyle) {
       case 'dot':
         document.body.classList.add('cursor-dot-style');
         cursorDot.classList.add('active');
@@ -56,8 +108,6 @@
         cursorDot.classList.remove('active');
         cursorOutline.classList.remove('active');
     }
-
-    localStorage.setItem('cursorStyle', style);
   }
 
   // 鼠标移动事件
@@ -65,25 +115,25 @@
     mouseX = e.clientX;
     mouseY = e.clientY;
 
-    // 添加拖尾效果
-    const now = Date.now();
-    if (cursorTrailEnabled && now - lastTrailTime > 30) {
-      createTrail(mouseX, mouseY);
-      lastTrailTime = now;
+    // 添加拖尾效果（根据配置）
+    if (CONFIG.trail.enabled) {
+      const now = Date.now();
+      if (now - lastTrailTime > CONFIG.trail.interval) {
+        createTrail(mouseX, mouseY);
+        lastTrailTime = now;
+      }
     }
   });
 
   // 平滑跟随动画
   function animateCursor() {
-    // 光标点快速跟随
-    const dotSpeed = 0.15;
-    dotX += (mouseX - dotX) * dotSpeed;
-    dotY += (mouseY - dotY) * dotSpeed;
+    // 光标点跟随（使用配置的速度）
+    dotX += (mouseX - dotX) * CONFIG.speed.dot;
+    dotY += (mouseY - dotY) * CONFIG.speed.dot;
 
-    // 外圈缓慢跟随
-    const outlineSpeed = 0.08;
-    outlineX += (mouseX - outlineX) * outlineSpeed;
-    outlineY += (mouseY - outlineY) * outlineSpeed;
+    // 外圈跟随（使用配置的速度）
+    outlineX += (mouseX - outlineX) * CONFIG.speed.outline;
+    outlineY += (mouseY - outlineY) * CONFIG.speed.outline;
 
     cursorDot.style.left = dotX + 'px';
     cursorDot.style.top = dotY + 'px';
@@ -97,20 +147,18 @@
 
   // 鼠标按下事件
   document.addEventListener('mousedown', function(e) {
-    isDragging = true;
     document.body.classList.add('dragging');
     cursorDot.classList.add('clicking');
     cursorOutline.classList.add('clicking');
 
-    // 创建点击波纹
-    if (clickRippleEnabled) {
+    // 创建点击波纹（根据配置）
+    if (CONFIG.ripple.enabled) {
       createRipple(e.clientX, e.clientY);
     }
   });
 
   // 鼠标抬起事件
   document.addEventListener('mouseup', function() {
-    isDragging = false;
     document.body.classList.remove('dragging');
     cursorDot.classList.remove('clicking');
     cursorOutline.classList.remove('clicking');
@@ -137,13 +185,14 @@
   function createRipple(x, y) {
     const ripple = document.createElement('div');
     ripple.className = 'click-ripple';
-    ripple.style.left = (x - 50) + 'px';
-    ripple.style.top = (y - 50) + 'px';
+    const halfSize = {{ site.data.cursor-config.ripple.size }} / 2;
+    ripple.style.left = (x - halfSize) + 'px';
+    ripple.style.top = (y - halfSize) + 'px';
     document.body.appendChild(ripple);
 
     setTimeout(() => {
       ripple.remove();
-    }, 800);
+    }, CONFIG.ripple.duration);
   }
 
   // 创建鼠标拖尾效果
@@ -156,34 +205,11 @@
 
     setTimeout(() => {
       trail.remove();
-    }, 600);
+    }, CONFIG.trail.lifetime);
   }
 
-  // 暴露设置函数供配置面板使用
-  window.cursorEffects = {
-    setStyle: applyCursorStyle,
-    setTrail: function(enabled) {
-      cursorTrailEnabled = enabled;
-      localStorage.setItem('cursorTrailEnabled', enabled);
-    },
-    setRipple: function(enabled) {
-      clickRippleEnabled = enabled;
-      localStorage.setItem('cursorRippleEnabled', enabled);
-    },
-    getTrailEnabled: function() {
-      return cursorTrailEnabled;
-    },
-    getRippleEnabled: function() {
-      return clickRippleEnabled;
-    },
-    getCurrentStyle: function() {
-      return localStorage.getItem('cursorStyle') || 'default';
-    }
-  };
-
-  // 加载保存的设置
-  loadSettings();
-
-  console.log('✨ 自定义鼠标效果已加载');
+  // 应用配置的样式
+  applyCursorStyle();
 })();
 </script>
+{% endif %}
