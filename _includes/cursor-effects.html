@@ -3,53 +3,6 @@
 <div class="cursor-dot"></div>
 <div class="cursor-outline"></div>
 
-<style>
-/* 动态注入配置样式 */
-.cursor-dot {
-  width: {{ site.data.cursor-config.cursor_size.dot }}px;
-  height: {{ site.data.cursor-config.cursor_size.dot }}px;
-  background-color: {{ site.data.cursor-config.cursor_size.dot_color }};
-  transition: transform {{ site.data.cursor-config.advanced.transition_speed }}ms ease;
-}
-
-.cursor-outline {
-  width: {{ site.data.cursor-config.cursor_size.outline }}px;
-  height: {{ site.data.cursor-config.cursor_size.outline }}px;
-  border: 2px solid {{ site.data.cursor-config.cursor_size.outline_color }};
-  transition: transform {{ site.data.cursor-config.advanced.transition_speed }}ms ease;
-}
-
-.cursor-dot.hovering {
-  transform: scale({{ site.data.cursor-config.advanced.hover_scale }});
-}
-
-.cursor-outline.hovering {
-  transform: scale({{ site.data.cursor-config.advanced.hover_scale }});
-}
-
-.cursor-dot.clicking {
-  transform: scale({{ site.data.cursor-config.advanced.click_scale }});
-}
-
-.cursor-outline.clicking {
-  transform: scale({{ site.data.cursor-config.advanced.click_scale }});
-}
-
-.cursor-trail {
-  width: {{ site.data.cursor-config.trail.size }}px;
-  height: {{ site.data.cursor-config.trail.size }}px;
-  background-color: {{ site.data.cursor-config.trail.color }};
-  filter: blur({{ site.data.cursor-config.trail.blur }}px);
-}
-
-.click-ripple {
-  width: {{ site.data.cursor-config.ripple.size }}px;
-  height: {{ site.data.cursor-config.ripple.size }}px;
-  border: 2px solid {{ site.data.cursor-config.ripple.color }};
-  animation: ripple-animation {{ site.data.cursor-config.ripple.duration }}ms ease-out;
-}
-</style>
-
 <script>
 (function() {
   // 服务器端配置（用户无法修改）
@@ -58,22 +11,40 @@
     trail: {
       enabled: {{ site.data.cursor-config.trail.enabled }},
       interval: {{ site.data.cursor-config.trail.interval }},
-      lifetime: {{ site.data.cursor-config.trail.lifetime }}
+      lifetime: {{ site.data.cursor-config.trail.lifetime }},
+      size: {{ site.data.cursor-config.trail.size }},
+      color: '{{ site.data.cursor-config.trail.color }}',
+      blur: {{ site.data.cursor-config.trail.blur }}
     },
     ripple: {
       enabled: {{ site.data.cursor-config.ripple.enabled }},
-      duration: {{ site.data.cursor-config.ripple.duration }}
+      size: {{ site.data.cursor-config.ripple.size }},
+      duration: {{ site.data.cursor-config.ripple.duration }},
+      color: '{{ site.data.cursor-config.ripple.color }}'
     },
     speed: {
       dot: {{ site.data.cursor-config.cursor_speed.dot }},
       outline: {{ site.data.cursor-config.cursor_speed.outline }}
+    },
+    cursor_size: {
+      dot: {{ site.data.cursor-config.cursor_size.dot }},
+      outline: {{ site.data.cursor-config.cursor_size.outline }},
+      dot_color: '{{ site.data.cursor-config.cursor_size.dot_color }}',
+      outline_color: '{{ site.data.cursor-config.cursor_size.outline_color }}'
+    },
+    advanced: {
+      hover_scale: {{ site.data.cursor-config.advanced.hover_scale }},
+      click_scale: {{ site.data.cursor-config.advanced.click_scale }}
     }
   };
+
+  console.log('🎯 鼠标特效配置:', CONFIG);
 
   // 检查是否为移动设备
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
   if (isMobile) {
+    console.log('📱 移动设备检测，跳过鼠标特效');
     return;
   }
 
@@ -81,7 +52,25 @@
   const cursorDot = document.querySelector('.cursor-dot');
   const cursorOutline = document.querySelector('.cursor-outline');
 
-  if (!cursorDot || !cursorOutline) return;
+  if (!cursorDot || !cursorOutline) {
+    console.error('❌ 找不到光标元素');
+    return;
+  }
+
+  console.log('✅ 光标元素已找到');
+
+  // 应用动态样式
+  function applyDynamicStyles() {
+    // 设置光标点样式
+    cursorDot.style.width = CONFIG.cursor_size.dot + 'px';
+    cursorDot.style.height = CONFIG.cursor_size.dot + 'px';
+    cursorDot.style.background = CONFIG.cursor_size.dot_color;
+
+    // 设置光标外圈样式
+    cursorOutline.style.width = CONFIG.cursor_size.outline + 'px';
+    cursorOutline.style.height = CONFIG.cursor_size.outline + 'px';
+    cursorOutline.style.border = '2px solid ' + CONFIG.cursor_size.outline_color;
+  }
 
   let mouseX = 0, mouseY = 0;
   let dotX = 0, dotY = 0;
@@ -97,16 +86,19 @@
         document.body.classList.add('cursor-dot-style');
         cursorDot.classList.add('active');
         cursorOutline.classList.add('active');
+        console.log('✨ 应用圆点光标样式');
         break;
       case 'arrow-enhanced':
         document.body.classList.add('cursor-arrow-enhanced');
         cursorDot.classList.remove('active');
         cursorOutline.classList.remove('active');
+        console.log('✨ 应用增强箭头样式');
         break;
       default:
         document.body.classList.add('cursor-default');
         cursorDot.classList.remove('active');
         cursorOutline.classList.remove('active');
+        console.log('✨ 应用默认光标样式');
     }
   }
 
@@ -143,13 +135,15 @@
     requestAnimationFrame(animateCursor);
   }
 
-  animateCursor();
-
   // 鼠标按下事件
   document.addEventListener('mousedown', function(e) {
     document.body.classList.add('dragging');
     cursorDot.classList.add('clicking');
     cursorOutline.classList.add('clicking');
+
+    // 应用点击缩放
+    cursorDot.style.transform = 'translate(-50%, -50%) scale(' + CONFIG.advanced.click_scale + ')';
+    cursorOutline.style.transform = 'translate(-50%, -50%) scale(' + CONFIG.advanced.click_scale + ')';
 
     // 创建点击波纹（根据配置）
     if (CONFIG.ripple.enabled) {
@@ -162,6 +156,10 @@
     document.body.classList.remove('dragging');
     cursorDot.classList.remove('clicking');
     cursorOutline.classList.remove('clicking');
+
+    // 恢复原始大小
+    cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+    cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
   });
 
   // 悬停在可点击元素上
@@ -171,6 +169,10 @@
     if (e.target.matches(hoverTargets)) {
       cursorDot.classList.add('hovering');
       cursorOutline.classList.add('hovering');
+
+      // 应用悬停缩放
+      cursorDot.style.transform = 'translate(-50%, -50%) scale(' + CONFIG.advanced.hover_scale + ')';
+      cursorOutline.style.transform = 'translate(-50%, -50%) scale(' + CONFIG.advanced.hover_scale + ')';
     }
   });
 
@@ -178,6 +180,10 @@
     if (e.target.matches(hoverTargets)) {
       cursorDot.classList.remove('hovering');
       cursorOutline.classList.remove('hovering');
+
+      // 恢复原始大小
+      cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+      cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
     }
   });
 
@@ -185,9 +191,11 @@
   function createRipple(x, y) {
     const ripple = document.createElement('div');
     ripple.className = 'click-ripple';
-    const halfSize = {{ site.data.cursor-config.ripple.size }} / 2;
-    ripple.style.left = (x - halfSize) + 'px';
-    ripple.style.top = (y - halfSize) + 'px';
+    ripple.style.width = CONFIG.ripple.size + 'px';
+    ripple.style.height = CONFIG.ripple.size + 'px';
+    ripple.style.border = '2px solid ' + CONFIG.ripple.color;
+    ripple.style.left = (x - CONFIG.ripple.size / 2) + 'px';
+    ripple.style.top = (y - CONFIG.ripple.size / 2) + 'px';
     document.body.appendChild(ripple);
 
     setTimeout(() => {
@@ -199,6 +207,10 @@
   function createTrail(x, y) {
     const trail = document.createElement('div');
     trail.className = 'cursor-trail';
+    trail.style.width = CONFIG.trail.size + 'px';
+    trail.style.height = CONFIG.trail.size + 'px';
+    trail.style.background = CONFIG.trail.color;
+    trail.style.filter = 'blur(' + CONFIG.trail.blur + 'px)';
     trail.style.left = x + 'px';
     trail.style.top = y + 'px';
     document.body.appendChild(trail);
@@ -208,8 +220,12 @@
     }, CONFIG.trail.lifetime);
   }
 
-  // 应用配置的样式
+  // 应用所有样式和配置
+  applyDynamicStyles();
   applyCursorStyle();
+  animateCursor();
+
+  console.log('✅ 鼠标特效已启动');
 })();
 </script>
 {% endif %}
