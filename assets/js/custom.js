@@ -126,6 +126,133 @@
         });
     }
 
+    // 7. 站内搜索功能
+    function initSiteSearch() {
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+
+        if (!searchInput || !searchResults) {
+            console.log('Search elements not found');
+            return;
+        }
+
+        // 实时搜索功能
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value.trim().toLowerCase();
+
+            if (query.length < 2) {
+                searchResults.innerHTML = '';
+                return;
+            }
+
+            searchTimeout = setTimeout(function() {
+                performSearch(query, searchResults);
+            }, 300);
+        });
+
+        // 点击页面其他地方关闭搜索结果
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.innerHTML = '';
+            }
+        });
+
+        // 按ESC键清空搜索并关闭结果
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                searchInput.value = '';
+                searchResults.innerHTML = '';
+                searchInput.blur();
+            }
+        });
+    }
+
+    // 执行搜索
+    function performSearch(query, resultsContainer) {
+        // 搜索页面内所有链接和标题
+        const searchableElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, a, .archive__item-title');
+        const results = [];
+        const seen = new Set();
+
+        searchableElements.forEach(function(element) {
+            const text = element.textContent.toLowerCase();
+            const normalText = element.textContent;
+
+            if (text.includes(query)) {
+                let link = '';
+                let title = '';
+                let description = '';
+
+                // 如果是链接
+                if (element.tagName === 'A') {
+                    link = element.href;
+                    title = normalText;
+                }
+                // 如果是标题
+                else if (element.tagName.match(/^H[1-6]$/)) {
+                    // 查找最近的链接
+                    const parent = element.closest('article, .archive__item');
+                    if (parent) {
+                        const parentLink = parent.querySelector('a');
+                        if (parentLink) {
+                            link = parentLink.href;
+                        }
+                    }
+                    title = normalText;
+                }
+                // 如果是段落或其他元素
+                else {
+                    const parent = element.closest('article, .archive__item');
+                    if (parent) {
+                        const parentLink = parent.querySelector('a');
+                        const parentTitle = parent.querySelector('h1, h2, h3, .archive__item-title');
+                        if (parentLink && parentTitle) {
+                            link = parentLink.href;
+                            title = parentTitle.textContent;
+                            description = normalText.substring(0, 100) + '...';
+                        }
+                    }
+                }
+
+                // 避免重复结果
+                if (link && !seen.has(link)) {
+                    seen.add(link);
+                    results.push({
+                        link: link,
+                        title: title || 'Untitled',
+                        description: description
+                    });
+                }
+            }
+        });
+
+        // 显示搜索结果
+        if (results.length === 0) {
+            resultsContainer.innerHTML = '<div class="search-result-item no-results">未找到相关内容</div>';
+        } else {
+            let html = '';
+            // 限制显示前10个结果
+            results.slice(0, 10).forEach(function(result) {
+                html += '<a href="' + result.link + '" class="search-result-item">';
+                html += '<div class="search-result-title">' + escapeHtml(result.title) + '</div>';
+                if (result.description) {
+                    html += '<div class="search-result-description">' + escapeHtml(result.description) + '</div>';
+                }
+                html += '</a>';
+            });
+            resultsContainer.innerHTML = html;
+        }
+    }
+
+    // HTML转义函数
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
     // 页面加载完成后初始化
     document.addEventListener('DOMContentLoaded', function() {
         console.log('Custom scripts loaded!');
@@ -137,6 +264,7 @@
         initScrollReveal();
         // initMouseFollow(); // 取消注释以启用鼠标跟随效果
         initDynamicBackground();
+        initSiteSearch(); // 初始化搜索功能
     });
 
 })();
