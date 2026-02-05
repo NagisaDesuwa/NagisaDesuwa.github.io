@@ -257,7 +257,8 @@
     currentTrack = index;
     var actualIndex = getActualIndex(currentTrack);
     var track = playlist[actualIndex];
-    audio.src = track.url;
+    /* 对 URL 进行编码，处理特殊字符（双空格、中文、括号等） */
+    audio.src = encodeURI(track.url);
     songTitle.textContent = track.title;
     songArtist.textContent = track.artist || '';
     loadRetryCount = 0; /* 重置重试计数 */
@@ -287,8 +288,8 @@
       console.log('🔄 尝试重新加载... (' + loadRetryCount + '/' + maxLoadRetries + ')');
       setTimeout(function() {
         var track = playlist[getActualIndex(currentTrack)];
-        /* 添加时间戳绕过缓存 */
-        audio.src = track.url + '?t=' + Date.now();
+        /* 添加时间戳绕过缓存，并对 URL 进行编码 */
+        audio.src = encodeURI(track.url) + '?t=' + Date.now();
       }, 1000 * loadRetryCount); /* 递增延迟 */
     } else {
       /* 重试失败，尝试播放下一首 */

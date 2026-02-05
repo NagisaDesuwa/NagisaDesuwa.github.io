@@ -202,12 +202,27 @@
     z-index: 100;
   }
 
+  /* 移动端强制显示汉堡菜单按钮 */
+  @media (max-width: $small) {
+    button {
+      display: block !important;
+      visibility: visible !important;
+    }
+  }
+
   .visible-links {
     display: table;
 
     li {
       display: table-cell;
       vertical-align: middle;
+
+      /* 移动端隐藏非 persist 的导航链接 */
+      @media (max-width: $small) {
+        &:not(.persist) {
+          display: none !important;
+        }
+      }
 
       &:first-child {
         font-weight: bold;
