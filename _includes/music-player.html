@@ -45,6 +45,7 @@
   var playlist = [];
   var currentTrack = 0;
   var shuffledIndices = []; /* 随机播放的索引数组 */
+  var defaultPlayOrder = []; /* 默认播放顺序（首次访问时随机生成） */
   var player = document.getElementById('music-player');
   var audio = document.getElementById('audio-player');
   var playBtn = document.getElementById('play-btn');
@@ -117,8 +118,72 @@
       modeBtn.disabled = true;
       playlistBtn.disabled = true;
     } else {
+      /* 生成或恢复默认播放顺序 */
+      var savedOrder = localStorage.getItem('defaultPlayOrder');
+      if (savedOrder) {
+        /* 恢复保存的播放顺序 */
+        try {
+          defaultPlayOrder = JSON.parse(savedOrder);
+          /* 验证播放顺序是否有效 */
+          if (!Array.isArray(defaultPlayOrder) || defaultPlayOrder.length !== playlist.length) {
+            /* 无效，重新生成 */
+            generateDefaultPlayOrder();
+          }
+        } catch (e) {
+          /* 解析失败，重新生成 */
+          generateDefaultPlayOrder();
+        }
+      } else {
+        /* 首次访问，生成随机播放顺序 */
+        generateDefaultPlayOrder();
+      }
+
       initializePlayer();
     }
+  }
+
+  /* 生成默认播放顺序：确保"あの頃のように"在第一位，其他随机 */
+  function generateDefaultPlayOrder() {
+    /* 找到"あの頃のように"的索引 */
+    var defaultTrackIndex = -1;
+    for (var i = 0; i < playlist.length; i++) {
+      if (playlist[i].url.includes('石川真也 - あの頃のように') ||
+          playlist[i].title.includes('あの頃のように')) {
+        defaultTrackIndex = i;
+        break;
+      }
+    }
+
+    /* 生成索引数组 [0, 1, 2, ...] */
+    defaultPlayOrder = Array.from({ length: playlist.length }, function(_, i) { return i; });
+
+    /* 如果找到了"あの頃のように" */
+    if (defaultTrackIndex >= 0) {
+      /* 移除这首歌的索引 */
+      defaultPlayOrder.splice(defaultTrackIndex, 1);
+
+      /* 随机打乱剩余索引 */
+      for (var i = defaultPlayOrder.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = defaultPlayOrder[i];
+        defaultPlayOrder[i] = defaultPlayOrder[j];
+        defaultPlayOrder[j] = temp;
+      }
+
+      /* 将"あの頃のように"的索引放在第一位 */
+      defaultPlayOrder.unshift(defaultTrackIndex);
+    } else {
+      /* 如果没找到，只是随机打乱所有索引 */
+      for (var i = defaultPlayOrder.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = defaultPlayOrder[i];
+        defaultPlayOrder[i] = defaultPlayOrder[j];
+        defaultPlayOrder[j] = temp;
+      }
+    }
+
+    /* 保存到 localStorage */
+    localStorage.setItem('defaultPlayOrder', JSON.stringify(defaultPlayOrder));
   }
 
   /* 生成随机播放索引 */
@@ -136,6 +201,9 @@
   function getActualIndex(displayIndex) {
     if (playMode === 'random') {
       return shuffledIndices[displayIndex];
+    } else if (playMode === 'order' && defaultPlayOrder.length > 0) {
+      /* 顺序播放模式使用默认播放顺序 */
+      return defaultPlayOrder[displayIndex];
     }
     return displayIndex;
   }
@@ -143,26 +211,39 @@
   /* 渲染播放列表 */
   function renderPlaylist() {
     playlistItems.innerHTML = '';
-    playlist.forEach(function(track, index) {
+
+    /* 根据播放模式决定显示顺序 */
+    var displayOrder;
+    if (playMode === 'random' && shuffledIndices.length > 0) {
+      displayOrder = shuffledIndices;
+    } else if (playMode === 'order' && defaultPlayOrder.length > 0) {
+      displayOrder = defaultPlayOrder;
+    } else {
+      displayOrder = Array.from({ length: playlist.length }, function(_, i) { return i; });
+    }
+
+    displayOrder.forEach(function(actualIndex, displayIndex) {
+      var track = playlist[actualIndex];
       var item = document.createElement('div');
       item.className = 'playlist-item';
-      if (getActualIndex(currentTrack) === index || (playMode !== 'random' && currentTrack === index)) {
+
+      /* 判断是否是当前播放的歌曲 */
+      if (getActualIndex(currentTrack) === actualIndex) {
         item.classList.add('active');
       }
+
       item.innerHTML = '<div class="playlist-item-title">' + track.title + '</div><div class="playlist-item-artist">' + (track.artist || '') + '</div>';
+
       item.addEventListener('click', function() {
-        /* 找到这个索引在当前播放模式下的位置 */
-        if (playMode === 'random') {
-          currentTrack = shuffledIndices.indexOf(index);
-        } else {
-          currentTrack = index;
-        }
+        /* 点击播放列表项时，设置 currentTrack 为显示索引 */
+        currentTrack = displayIndex;
         loadTrack(currentTrack);
         audio.play();
         playBtn.textContent = '⏸';
         renderPlaylist();
         savePlayState();
       });
+
       playlistItems.appendChild(item);
     });
   }
@@ -221,28 +302,20 @@
 
   /* 上一曲 */
   prevBtn.addEventListener('click', function() {
-    if (playMode === 'single') {
-      audio.currentTime = 0;
-      audio.play();
-    } else {
-      currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
-      loadTrack(currentTrack);
-      audio.play();
-    }
+    /* 单曲循环模式下，手动点击也可以切换到上一曲 */
+    currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
+    loadTrack(currentTrack);
+    audio.play();
     playBtn.textContent = '⏸';
     savePlayState();
   });
 
   /* 下一曲 */
   nextBtn.addEventListener('click', function() {
-    if (playMode === 'single') {
-      audio.currentTime = 0;
-      audio.play();
-    } else {
-      currentTrack = (currentTrack + 1) % playlist.length;
-      loadTrack(currentTrack);
-      audio.play();
-    }
+    /* 单曲循环模式下，手动点击也可以切换到下一曲 */
+    currentTrack = (currentTrack + 1) % playlist.length;
+    loadTrack(currentTrack);
+    audio.play();
     playBtn.textContent = '⏸';
     savePlayState();
   });
@@ -250,8 +323,9 @@
   /* 播放模式切换 */
   modeBtn.addEventListener('click', function() {
     var modes = ['order', 'random', 'single'];
-    var currentIndex = modes.indexOf(playMode);
-    playMode = modes[(currentIndex + 1) % modes.length];
+    var currentModeIndex = modes.indexOf(playMode);
+    var oldMode = playMode;
+    playMode = modes[(currentModeIndex + 1) % modes.length];
 
     /* 更新按钮图标 */
     var modeIcons = {
@@ -268,15 +342,30 @@
     };
     modeBtn.title = modeTitles[playMode];
 
-    /* 如果切换到随机模式，生成随机索引 */
+    /* 根据模式切换调整 currentTrack，保持当前播放的歌曲不变 */
+    var currentActualIndex = getActualIndex(currentTrack);
+
     if (playMode === 'random') {
+      /* 切换到随机模式 */
       generateShuffledIndices();
-      /* 保持当前歌曲，调整 currentTrack */
-      var currentActualIndex = getActualIndex(currentTrack);
+      /* 找到当前歌曲在新的随机索引中的位置 */
       currentTrack = shuffledIndices.indexOf(currentActualIndex);
     } else if (playMode === 'order') {
-      /* 从随机模式切回顺序模式，恢复实际索引 */
-      currentTrack = getActualIndex(currentTrack);
+      /* 切换到顺序模式 */
+      /* 找到当前歌曲在 defaultPlayOrder 中的位置 */
+      currentTrack = defaultPlayOrder.indexOf(currentActualIndex);
+      if (currentTrack === -1) {
+        currentTrack = 0; /* 如果找不到，默认第一首 */
+      }
+    } else if (playMode === 'single') {
+      /* 切换到单曲循环模式，保持 currentTrack 不变即可 */
+      if (oldMode === 'random') {
+        /* 从随机模式切换，需要找到在 defaultPlayOrder 中的位置 */
+        currentTrack = defaultPlayOrder.indexOf(currentActualIndex);
+        if (currentTrack === -1) {
+          currentTrack = 0;
+        }
+      }
     }
 
     renderPlaylist();
@@ -519,11 +608,12 @@
           restorePlayback();
         }
       } else {
-        /* 首次访问或没有保存状态，加载指定的默认歌曲：石川真也 - あの頃のように */
-        var defaultTrackIndex = findTrackByName('石川真也 - あの頃のように');
-        loadTrack(defaultTrackIndex);
+        /* 首次访问或没有保存状态，加载默认播放列表的第一首歌（あの頃のように） */
+        currentTrack = 0;
+        loadTrack(currentTrack);
         playBtn.textContent = '▶';
-        console.log('🎵 音乐播放器已准备就绪，默认歌曲：' + playlist[defaultTrackIndex].title);
+        var actualIndex = getActualIndex(currentTrack);
+        console.log('🎵 音乐播放器已准备就绪，默认歌曲：' + playlist[actualIndex].title);
 
         /* 标记播放器已准备好，供入口大门使用 */
         window.musicPlayerReady = true;
