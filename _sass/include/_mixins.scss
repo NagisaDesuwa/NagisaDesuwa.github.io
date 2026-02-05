@@ -51,3 +51,78 @@
     display: table;
   }
 }
+
+
+/*
+   Responsive Mixins - 响应式便捷 Mixin
+   ========================================================================== */
+
+/* 移动端优先的响应式断点 */
+$bp-mobile: 480px !default;
+$bp-mobile-lg: 640px !default;
+$bp-tablet: 768px !default;
+$bp-tablet-lg: 1024px !default;
+$bp-desktop: 1280px !default;
+
+/* 小手机 (最大 480px) */
+@mixin mobile {
+  @media (max-width: #{$bp-mobile}) {
+    @content;
+  }
+}
+
+/* 手机 (最大 640px) */
+@mixin mobile-lg {
+  @media (max-width: #{$bp-mobile-lg}) {
+    @content;
+  }
+}
+
+/* 平板以下 (最大 768px) */
+@mixin tablet-down {
+  @media (max-width: #{$bp-tablet}) {
+    @content;
+  }
+}
+
+/* 仅平板 (481px - 1024px) */
+@mixin tablet-only {
+  @media (min-width: #{$bp-mobile + 1}) and (max-width: #{$bp-tablet-lg}) {
+    @content;
+  }
+}
+
+/* 平板及以上 (最小 769px) */
+@mixin tablet-up {
+  @media (min-width: #{$bp-tablet + 1}) {
+    @content;
+  }
+}
+
+/* 大平板及以上 (最小 1025px) */
+@mixin desktop {
+  @media (min-width: #{$bp-tablet-lg + 1}) {
+    @content;
+  }
+}
+
+/* 触摸设备检测 */
+@mixin touch-device {
+  @media (hover: none) and (pointer: coarse) {
+    @content;
+  }
+}
+
+/* 横屏模式 */
+@mixin landscape {
+  @media (orientation: landscape) {
+    @content;
+  }
+}
+
+/* 竖屏模式 */
+@mixin portrait {
+  @media (orientation: portrait) {
+    @content;
+  }
+}
