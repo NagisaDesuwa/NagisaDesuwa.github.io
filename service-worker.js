@@ -9,6 +9,7 @@ var OFFLINE_URL = '/offline.html';
 /* Assets to cache on install */
 var PRECACHE_ASSETS = [
   '/',
+  '/offline.html',
   '/assets/css/main.css',
   '/assets/css/custom.css',
   '/images/profile.png',
@@ -21,7 +22,13 @@ self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
       console.log('[SW] Precaching assets');
-      return cache.addAll(PRECACHE_ASSETS);
+      /* Cache each asset individually to avoid all-or-nothing failure */
+      var cachePromises = PRECACHE_ASSETS.map(function(url) {
+        return cache.add(url).catch(function(err) {
+          console.warn('[SW] Failed to cache:', url, err);
+        });
+      });
+      return Promise.all(cachePromises);
     }).then(function() {
       return self.skipWaiting();
     })
@@ -64,7 +71,8 @@ self.addEventListener('fetch', function(event) {
         /* Return cached response and update cache in background */
         event.waitUntil(
           fetch(event.request).then(function(networkResponse) {
-            if (networkResponse && networkResponse.status === 200) {
+            /* Only cache valid same-origin responses */
+            if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
               caches.open(CACHE_NAME).then(function(cache) {
                 cache.put(event.request, networkResponse);
               });
@@ -78,8 +86,8 @@ self.addEventListener('fetch', function(event) {
 
       /* No cache, fetch from network */
       return fetch(event.request).then(function(networkResponse) {
-        /* Cache successful responses */
-        if (networkResponse && networkResponse.status === 200) {
+        /* Only cache valid same-origin responses */
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
           var responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then(function(cache) {
             cache.put(event.request, responseToCache);
