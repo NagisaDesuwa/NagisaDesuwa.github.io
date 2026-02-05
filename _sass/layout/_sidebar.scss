@@ -304,10 +304,11 @@
 
   /* 移动端：居中显示 */
   @media (max-width: $medium) {
-    display: block !important;
-    text-align: center;
+    display: flex !important;
+    justify-content: center;
     width: 100%;
     margin-top: 0.5em;
+    position: relative;
   }
 
   @include breakpoint($large) {
