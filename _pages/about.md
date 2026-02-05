@@ -6,6 +6,7 @@ header:
   show_overlay_excerpt: false
 excerpt: "游戏设计师 | 创造有趣的游戏体验"
 author_profile: true
+sidebar_archive: true
 redirect_from:
   - /about/
   - /about.html
@@ -34,5 +35,3 @@ redirect_from:
 ---
 
 这个网站用来记录我的开发心得和作品展示。欢迎浏览我的[作品集](/portfolio/)和[博客](/year-archive/)。
-
-{% include timeline-monthly.html limit=5 %}

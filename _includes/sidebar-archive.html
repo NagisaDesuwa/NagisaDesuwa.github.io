@@ -1,0 +1,23 @@
+{% include base_path %}
+
+{% assign posts_by_month = site.posts | group_by_exp: "post", "post.date | date: '%Y-%m'" %}
+
+<div class="sidebar-archive">
+  <h3 class="sidebar-archive__title">
+    <i class="fa fa-fw fa-calendar-alt" aria-hidden="true"></i> 文章归档
+  </h3>
+  <ul class="sidebar-archive__list">
+    {% for month_group in posts_by_month %}
+      {% assign month_date = month_group.items.first.date %}
+      {% assign month_label = month_date | date: "%Y年%m月" %}
+      {% assign month_id = month_date | date: "%Y-%m" %}
+      {% assign post_count = month_group.items.size %}
+      <li class="sidebar-archive__item">
+        <a href="{{ base_path }}/year-archive/#{{ month_id }}" class="sidebar-archive__link">
+          <span class="sidebar-archive__month">{{ month_label }}</span>
+          <span class="sidebar-archive__count">{{ post_count }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>

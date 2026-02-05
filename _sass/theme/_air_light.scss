@@ -37,7 +37,11 @@ $sidebar-screen-min-width   : 1024px;
 /* Light theme for the site */
 :root {
     --global-base-color                 : #{$primary-color};
+    --global-primary-color              : #{$primary-color};
+    --global-primary-color-light        : #{mix(#fff, $primary-color, 85%)};
     --global-bg-color                   : #{$background};
+    --global-background-color           : #{$background};
+    --global-background-color-alt       : #{$background-lighter};
     --global-footer-bg-color            : #{$footer};
     --global-border-color               : #{$light-primary-color};
     --global-dark-border-color          : #{$background-light};
@@ -52,4 +56,7 @@ $sidebar-screen-min-width   : 1024px;
     --global-text-color                 : #{$text};
     --global-text-color-light           : #{$light-primary-color};
     --global-thead-color                : #{$background-lighter};
+    --global-contrast-text-color        : #fff;
+    --global-input-bg-color             : #{$background-lighter};
+    --global-input-border-color         : #{$light-primary-color};
 }

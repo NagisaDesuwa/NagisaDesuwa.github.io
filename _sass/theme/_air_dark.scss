@@ -37,7 +37,11 @@ $sidebar-screen-min-width   : 1024px;
 /* Dark theme for the site */
 html[data-theme="dark"] {
     --global-base-color                 : #{$primary-color};
+    --global-primary-color              : #{$primary-color};
+    --global-primary-color-light        : #{mix($background, $primary-color, 85%)};
     --global-bg-color                   : #{$background};
+    --global-background-color           : #{$background};
+    --global-background-color-alt       : #{$background-light};
     --global-footer-bg-color            : #{$footer};
     --global-border-color               : #{$light-primary-color};
     --global-dark-border-color          : #{$background-light};
@@ -52,4 +56,7 @@ html[data-theme="dark"] {
     --global-text-color                 : #{$text};
     --global-text-color-light           : #{$light-primary-color};
     --global-thead-color                : #{$background-lighter};
+    --global-contrast-text-color        : #fff;
+    --global-input-bg-color             : #{$background-light};
+    --global-input-border-color         : #{$light-primary-color};
 }

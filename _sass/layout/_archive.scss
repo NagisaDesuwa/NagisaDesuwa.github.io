@@ -267,8 +267,8 @@
   display: inline-block;
   font-size: $type-size-4;
   font-weight: 700;
-  color: var(--global-background-color);
-  background: var(--global-primary-color, #6c5ce7);
+  color: var(--global-contrast-text-color);
+  background: var(--global-primary-color);
   border-radius: 4px;
   z-index: 2;
 
@@ -280,7 +280,7 @@
     transform: translateY(-50%);
     width: 12px;
     height: 12px;
-    background: var(--global-primary-color, #6c5ce7);
+    background: var(--global-primary-color);
     border-radius: 50%;
     margin-left: -6px;
     display: none;
@@ -295,7 +295,7 @@
   width: 3px;
   background: linear-gradient(
     to bottom,
-    var(--global-primary-color, #6c5ce7),
+    var(--global-primary-color),
     var(--global-border-color)
   );
   border-radius: 3px;
@@ -318,27 +318,27 @@
   width: 12px;
   height: 12px;
   background: var(--global-background-color);
-  border: 3px solid var(--global-primary-color, #6c5ce7);
+  border: 3px solid var(--global-primary-color);
   border-radius: 50%;
   z-index: 2;
   transition: all 0.3s ease;
 }
 
 .timeline__item:hover .timeline__node {
-  background: var(--global-primary-color, #6c5ce7);
+  background: var(--global-primary-color);
   transform: scale(1.3);
-  box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.2);
+  box-shadow: 0 0 0 4px var(--global-primary-color-light);
 }
 
 .timeline__item .archive__item {
   padding: 1em 1.25em;
-  background: var(--global-background-color-alt, #f8f9fa);
+  background: var(--global-background-color-alt);
   border-radius: 8px;
   border-left: 3px solid transparent;
   transition: all 0.3s ease;
 
   &:hover {
-    border-left-color: var(--global-primary-color, #6c5ce7);
+    border-left-color: var(--global-primary-color);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transform: translateX(4px);
   }
@@ -388,11 +388,11 @@
   font-weight: 700;
   margin-bottom: 1.5em;
   padding-bottom: 0.5em;
-  border-bottom: 2px solid var(--global-primary-color, #6c5ce7);
+  border-bottom: 2px solid var(--global-primary-color);
 
   i {
     margin-right: 0.3em;
-    color: var(--global-primary-color, #6c5ce7);
+    color: var(--global-primary-color);
   }
 }
 
@@ -410,8 +410,8 @@
     display: inline-block;
     font-size: $type-size-5;
     font-weight: 600;
-    color: var(--global-background-color);
-    background: linear-gradient(135deg, var(--global-primary-color, #6c5ce7), #a29bfe);
+    color: var(--global-contrast-text-color);
+    background: var(--global-primary-color);
     border-radius: 20px;
     z-index: 2;
   }
@@ -431,13 +431,13 @@
       align-items: baseline;
       gap: 0.5em;
       padding: 0.8em 1em;
-      background: var(--global-background-color-alt, #f8f9fa);
+      background: var(--global-background-color-alt);
       border-radius: 8px;
       border-left: 3px solid transparent;
       transition: all 0.3s ease;
 
       &:hover {
-        border-left-color: var(--global-primary-color, #6c5ce7);
+        border-left-color: var(--global-primary-color);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         transform: translateX(4px);
       }
@@ -453,8 +453,8 @@
     padding: 0 6px;
     font-size: $type-size-6;
     font-weight: 700;
-    color: var(--global-primary-color, #6c5ce7);
-    background: rgba(108, 92, 231, 0.1);
+    color: var(--global-primary-color);
+    background: var(--global-primary-color-light);
     border-radius: 6px;
   }
 
@@ -469,7 +469,7 @@
       text-decoration: none;
 
       &:hover {
-        color: var(--global-primary-color, #6c5ce7);
+        color: var(--global-primary-color);
       }
     }
   }
@@ -514,4 +514,86 @@
       left: -3em;
     }
   }
+}
+
+/*
+   Sidebar Archive (monthly navigation)
+   ========================================================================== */
+
+.sidebar-archive {
+  margin-top: 1.5em;
+  padding-top: 1em;
+  border-top: 1px solid var(--global-border-color, #e0e0e0);
+}
+
+.sidebar-archive__title {
+  font-size: $type-size-5;
+  font-weight: 700;
+  margin: 0 0 0.75em;
+  color: var(--global-text-color);
+
+  i {
+    margin-right: 0.3em;
+    color: var(--global-primary-color);
+  }
+}
+
+.sidebar-archive__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-archive__item {
+  margin-bottom: 0.25em;
+}
+
+.sidebar-archive__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5em 0.75em;
+  border-radius: 6px;
+  color: var(--global-text-color);
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--global-background-color-alt);
+    color: var(--global-primary-color);
+  }
+}
+
+.sidebar-archive__month {
+  font-size: $type-size-6;
+}
+
+.sidebar-archive__count {
+  font-size: $type-size-7;
+  padding: 0.15em 0.5em;
+  background: var(--global-primary-color);
+  color: var(--global-contrast-text-color);
+  border-radius: 10px;
+  min-width: 1.5em;
+  text-align: center;
+}
+
+/*
+   Timeline month label (for blog archive page)
+   ========================================================================== */
+
+.timeline__month-group {
+  margin-left: 1em;
+  padding-bottom: 0.5em;
+}
+
+.timeline__month-label {
+  display: inline-block;
+  margin: 0.5em 0 0.75em;
+  padding: 0.2em 0.6em;
+  font-size: $type-size-6;
+  font-weight: 600;
+  color: var(--global-primary-color);
+  background: var(--global-primary-color-light);
+  border-radius: 4px;
 }
