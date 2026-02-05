@@ -1938,45 +1938,68 @@ body {
         border: 1px solid var(--global-border-color);
     }
 
-    /* 作者信息区域 - 水平布局 */
+    /* 作者信息父容器 - 垂直居中布局 */
+    .sidebar [itemscope] {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center;
+    }
+
+    /* 作者头像区域 - 居中显示 */
     .author__avatar {
-        float: left;
-        width: 70px;
-        margin-right: 1em;
-        margin-bottom: 0;
+        float: none !important;
+        display: block !important;
+        width: auto !important;
+        margin: 0 0 0.75em 0 !important;
+        text-align: center;
     }
 
     .author__avatar img {
-        width: 70px;
-        height: 70px;
+        width: 80px !important;
+        height: 80px !important;
+        max-width: 80px !important;
         border-radius: 50%;
+        padding: 2px;
+        border: 2px solid var(--global-border-color);
+        object-fit: cover;
     }
 
+    /* 作者内容区域 - 居中显示 */
     .author__content {
-        overflow: hidden;
-        padding-top: 0.5em;
+        display: block !important;
+        width: 100% !important;
+        overflow: visible;
+        padding: 0 !important;
+        text-align: center;
     }
 
     .author__name {
-        font-size: 1.1em;
-        margin-bottom: 0.25em;
+        font-size: 1.2em;
+        margin: 0 0 0.2em 0 !important;
     }
 
     .author__bio {
-        font-size: 0.85em;
+        font-size: 0.9em;
         line-height: 1.4;
-        margin-bottom: 0;
+        margin: 0 !important;
+        color: var(--global-text-color-light);
     }
 
-    /* 社交链接区域 */
+    /* 社交链接区域 - 居中显示 */
     .author__urls-wrapper {
+        display: block !important;
+        width: 100%;
         clear: both;
-        padding-top: 1em;
+        padding-top: 0.75em;
+        margin-top: 0.75em;
+        border-top: 1px solid var(--global-border-color);
     }
 
     .author__urls {
         display: flex !important;
         flex-wrap: wrap;
+        justify-content: center !important;
         gap: 0.4em;
         position: static !important;
         visibility: visible !important;
@@ -2002,14 +2025,15 @@ body {
         display: inline-flex;
         align-items: center;
         gap: 0.3em;
-        padding: 0.3em 0.6em;
-        font-size: 0.8em;
+        padding: 0.4em 0.7em;
+        font-size: 0.85em;
         background: var(--global-bg-color);
         border: 1px solid var(--global-border-color);
         border-radius: 4px;
         color: var(--global-text-color);
         text-decoration: none;
         transition: all 0.2s ease;
+        min-height: 32px;
     }
 
     .author__urls li a:hover {
@@ -2031,6 +2055,48 @@ body {
     .author__urls li:has(span[itemprop="addressLocality"]) {
         display: none;
     }
+
+    /* 标签菜单优化 */
+    .tag-menu {
+        margin-top: 0.75em !important;
+        padding-top: 0.75em !important;
+    }
+
+    .tag-menu__title {
+        font-size: 0.95em;
+        margin-bottom: 0.5em !important;
+        padding-bottom: 0 !important;
+    }
+
+    .tag-menu__list {
+        gap: 0.35em 0.5em !important;
+    }
+
+    .tag-menu__item {
+        padding: 0.25em 0.6em !important;
+        font-size: 0.85em;
+        line-height: 1.3;
+    }
+
+    .tag-menu__count {
+        padding: 0 0.3em !important;
+        font-size: 0.75em;
+    }
+
+    /* 归档区域优化 */
+    .sidebar-archive {
+        margin-top: 0.75em !important;
+        padding-top: 0.75em !important;
+    }
+
+    .sidebar-archive__title {
+        font-size: 0.95em;
+        margin-bottom: 0.5em !important;
+    }
+
+    .sidebar-archive__link {
+        padding: 0.25em 0.5em !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -2038,26 +2104,30 @@ body {
         padding: 0.75em;
     }
 
-    .author__avatar {
-        width: 60px;
-    }
-
     .author__avatar img {
-        width: 60px;
-        height: 60px;
+        width: 70px !important;
+        height: 70px !important;
+        max-width: 70px !important;
+        object-fit: cover;
     }
 
     .author__name {
-        font-size: 1em;
+        font-size: 1.1em;
     }
 
     .author__bio {
-        font-size: 0.8em;
+        font-size: 0.85em;
     }
 
     .author__urls li a {
-        padding: 0.25em 0.5em;
-        font-size: 0.75em;
+        padding: 0.35em 0.6em;
+        font-size: 0.8em;
+        min-height: 30px;
+    }
+
+    .tag-menu__item {
+        padding: 0.2em 0.5em !important;
+        font-size: 0.8em;
     }
 }
 
@@ -2170,10 +2240,17 @@ body {
 figure img,
 .archive__item-teaser img,
 .page__content img,
-.page__hero img,
-.entrance-gate img {
+.page__hero img {
     max-width: 100%;
     height: auto;
+    object-fit: cover;
+}
+
+/* 大门背景图片需要特殊处理，不能使用 height: auto */
+.entrance-gate .gate-bg-img {
+    max-width: none;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
 }
 
@@ -2281,5 +2358,158 @@ figure img,
     .page__hero--overlay {
         max-height: 50vh;
         min-height: 250px;
+    }
+}
+
+/* ========================================
+   性能优化 - Performance Optimization
+   ======================================== */
+
+/* 1. 尊重用户动效偏好 - 减少动画 */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .entrance-gate,
+    .parallax-background,
+    .particles-background,
+    .cursor-dot,
+    .cursor-outline,
+    .cursor-trail,
+    .click-ripple {
+        display: none !important;
+    }
+}
+
+/* 2. 移动端禁用复杂动画效果 */
+@media (max-width: 768px) {
+    /* 禁用视差背景动画 */
+    .parallax-background {
+        animation: none;
+        background-position: center center;
+    }
+
+    /* 禁用粒子效果 */
+    .particles-background,
+    .particle {
+        display: none !important;
+    }
+
+    /* 禁用鼠标拖尾效果 */
+    .cursor-trail {
+        display: none !important;
+    }
+
+    /* 禁用点击波纹效果 */
+    .click-ripple {
+        display: none !important;
+    }
+
+    /* 简化卡片悬停动画 */
+    .portfolio-item:hover,
+    .post-item:hover {
+        transform: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 简化时间线悬停动画 */
+    .timeline__item:hover .timeline__node {
+        transform: none;
+        box-shadow: none;
+    }
+
+    .timeline__item .archive__item:hover {
+        transform: none;
+    }
+}
+
+/* 3. 触摸设备禁用所有鼠标相关效果 */
+@media (hover: none) and (pointer: coarse) {
+    /* 禁用所有自定义光标效果 */
+    .cursor-dot,
+    .cursor-outline,
+    .cursor-trail,
+    .click-ripple {
+        display: none !important;
+    }
+
+    /* 禁用需要悬停的动画 */
+    .portfolio-item,
+    .post-item,
+    .archive__item,
+    .timeline__item .archive__item {
+        transition: none;
+    }
+
+    /* 简化悬停效果为点击反馈 */
+    .portfolio-item:active,
+    .post-item:active {
+        opacity: 0.8;
+    }
+}
+
+/* 4. content-visibility 优化长列表渲染 */
+.archive__item,
+.list__item,
+.grid__item,
+.timeline__item,
+.playlist-item {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 150px;
+}
+
+/* 文章内容区域优化 */
+.page__content > *:nth-child(n+10) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 100px;
+}
+
+/* 侧边栏链接列表优化 */
+.author__urls li {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 40px;
+}
+
+/* 标签云优化 */
+.tag-menu__item {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 32px;
+}
+
+/* 5. 图片懒加载占位优化 */
+img[loading="lazy"] {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+}
+
+/* 6. 低性能设备优化 */
+@media (max-width: 480px) {
+    /* 禁用所有装饰性动画 */
+    .parallax-background,
+    .particles-background {
+        display: none !important;
+    }
+
+    /* 简化滚动条样式 */
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+
+    /* 减少阴影复杂度 */
+    .sidebar.sticky,
+    .music-player,
+    .toc {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 }

@@ -530,7 +530,7 @@
 
   /* 移动端：减少间距 */
   @media (max-width: $medium) {
-    margin-top: 1em;
+    margin-top: 0.75em;
     padding-top: 0.75em;
   }
 }
@@ -548,7 +548,8 @@
 
   /* 移动端：减少标题间距 */
   @media (max-width: $medium) {
-    margin-bottom: 0.5em;
+    font-size: $type-size-6;
+    margin-bottom: 0.4em;
   }
 }
 
@@ -591,16 +592,20 @@
 
   /* 移动端：紧凑的标签样式 */
   @media (max-width: $medium) {
-    padding: 0.35em 0.6em;
+    padding: 0.2em 0.5em;
     background: var(--global-background-color-alt);
     border: 1px solid var(--global-border-color);
-    border-radius: 16px;
-    gap: 0.4em;
+    border-radius: 12px;
+    gap: 0.3em;
   }
 }
 
 .sidebar-archive__month {
   font-size: $type-size-6;
+
+  @media (max-width: $medium) {
+    font-size: $type-size-7;
+  }
 }
 
 .sidebar-archive__count {
@@ -614,8 +619,9 @@
 
   /* 移动端：更小的徽章 */
   @media (max-width: $medium) {
-    padding: 0.1em 0.4em;
+    padding: 0 0.35em;
     font-size: $type-size-8;
+    line-height: 1.3;
   }
 }
 
@@ -650,7 +656,7 @@
 
   /* 移动端：减少间距 */
   @media (max-width: $medium) {
-    margin-top: 1em;
+    margin-top: 0.75em;
     padding-top: 0.75em;
   }
 }
@@ -669,8 +675,9 @@
 
   /* 移动端：减少标题间距 */
   @media (max-width: $medium) {
-    margin-bottom: 0.6em;
-    padding-bottom: 0.5em;
+    font-size: $type-size-6;
+    margin-bottom: 0.4em;
+    padding-bottom: 0;
   }
 }
 
@@ -684,8 +691,8 @@
 
   /* 移动端：减少间距 */
   @media (max-width: $medium) {
-    gap: 0.5em 0.6em;
-    max-height: calc(28px * 3 + 0.5em * 2);
+    gap: 0.35em 0.5em;
+    max-height: calc(24px * 3 + 0.35em * 2);
   }
 }
 
@@ -717,9 +724,11 @@
 
   /* 移动端：更紧凑的标签 */
   @media (max-width: $medium) {
-    padding: 0.35em 0.7em;
-    gap: 0.3em;
-    border-radius: 16px;
+    padding: 0.2em 0.6em;
+    gap: 0.25em;
+    border-radius: 12px;
+    font-size: $type-size-7;
+    line-height: 1.2;
   }
 }
 
@@ -739,6 +748,7 @@
   /* 移动端：更小的徽章 */
   @media (max-width: $medium) {
     font-size: $type-size-8;
-    padding: 0.05em 0.35em;
+    padding: 0 0.3em;
+    line-height: 1.3;
   }
 }

@@ -164,6 +164,7 @@
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
+    text-align: center;
   }
 }
 
@@ -179,7 +180,7 @@
     display: block !important;
     width: auto !important;
     text-align: center;
-    margin-bottom: 0.5em;
+    margin: 0 0 0.5em 0 !important;
   }
 
   @include breakpoint($large) {
@@ -191,13 +192,16 @@
   img {
     max-width: 175px;
     border-radius: 50%;
+    object-fit: cover;
 
     /* 移动端：限制头像大小 */
     @media (max-width: $medium) {
-      max-width: 100px;
-      width: 100px;
-      padding: 3px;
-      border: 1px solid var(--global-border-color);
+      max-width: 80px;
+      width: 80px;
+      height: 80px;
+      padding: 2px;
+      border: 2px solid var(--global-border-color);
+      object-fit: cover;
     }
 
     @include breakpoint($large) {
@@ -218,8 +222,7 @@
   @media (max-width: $medium) {
     display: block !important;
     width: 100% !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+    padding: 0 !important;
     text-align: center;
   }
 
@@ -236,8 +239,7 @@
 
   /* 移动端：调整名字样式 */
   @media (max-width: $medium) {
-    margin-top: 0.5em;
-    margin-bottom: 0.25em;
+    margin: 0 0 0.2em 0 !important;
   }
 
   @include breakpoint($large) {
@@ -276,8 +278,7 @@
 
   /* 移动端：调整 bio 间距 */
   @media (max-width: $medium) {
-    margin-top: 0.25em;
-    margin-bottom: 0.75em;
+    margin: 0 !important;
     font-size: $type-size-6;
     color: var(--global-text-color-light);
   }
@@ -304,10 +305,11 @@
 
   /* 移动端：居中显示 */
   @media (max-width: $medium) {
-    display: flex !important;
-    justify-content: center;
+    display: block !important;
     width: 100%;
-    margin-top: 0.5em;
+    margin-top: 0.75em;
+    padding-top: 0.75em;
+    border-top: 1px solid var(--global-border-color);
     position: relative;
   }
 
@@ -338,12 +340,21 @@
   box-shadow: 0 0 10px rgba(#000, 0.25);
   cursor: default;
 
-  /* 移动端：居中显示下拉菜单 */
+  /* 移动端：居中显示链接列表 */
   @media (max-width: $medium) {
-    right: auto;
-    left: 50%;
-    transform: translateX(-50%);
-    min-width: 200px;
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4em;
+    position: static !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    transform: none;
   }
 
   @include breakpoint($large) {
@@ -371,6 +382,10 @@
     @include breakpoint($large) {
       display: none;
     }
+
+    @media (max-width: $medium) {
+      display: none !important;
+    }
   }
 
   &:after {
@@ -388,10 +403,19 @@
     @include breakpoint($large) {
       display: none;
     }
+
+    @media (max-width: $medium) {
+      display: none !important;
+    }
   }
 
   li {
     white-space: nowrap;
+
+    @media (max-width: $medium) {
+      margin: 0;
+      list-style: none;
+    }
   }
 
   a {
@@ -406,6 +430,25 @@
 
     &:hover {
       text-decoration: underline;
+    }
+
+    @media (max-width: $medium) {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3em;
+      margin: 0;
+      padding: 0.4em 0.7em;
+      font-size: $type-size-6;
+      background: var(--global-bg-color);
+      border: 1px solid var(--global-border-color);
+      border-radius: 4px;
+
+      &:hover {
+        background: var(--global-primary-color);
+        color: var(--global-contrast-text-color);
+        border-color: var(--global-primary-color);
+        text-decoration: none;
+      }
     }
   }
 }
