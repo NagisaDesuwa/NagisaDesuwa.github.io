@@ -17,6 +17,16 @@
     margin-top: 1em;
   }
 
+  /* 移动端：优化侧边栏整体布局 */
+  @media (max-width: $medium) {
+    padding: 1em;
+    margin: 0.5em;
+    background: var(--global-bg-color);
+    border: 1px solid var(--global-border-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
   @media screen and (min-width: $sidebar-screen-min-width) {
     height: 100vh;
     overflow-y: auto;               // Add scrollbar if the sidebar is too long
@@ -147,6 +157,14 @@
   // set width only, for non-square avatars
   // height: 36px;
 
+  /* 移动端：居中显示头像 */
+  @media (max-width: $medium) {
+    display: block;
+    width: auto;
+    text-align: center;
+    margin-bottom: 0.75em;
+  }
+
   @include breakpoint($large) {
     display: block;
     width: auto;
@@ -156,6 +174,13 @@
   img {
     max-width: 175px;
     border-radius: 50%;
+
+    /* 移动端：限制头像大小 */
+    @media (max-width: $medium) {
+      max-width: 100px;
+      padding: 3px;
+      border: 1px solid var(--global-border-color);
+    }
 
     @include breakpoint($large) {
       padding: 5px;
@@ -171,6 +196,15 @@
   padding-right: 25px;
   line-height: 1;
 
+  /* 移动端：居中显示内容 */
+  @media (max-width: $medium) {
+    display: block;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+  }
+
   @include breakpoint($large) {
     display: block;
     width: 100%;
@@ -181,6 +215,12 @@
 
 .author__name {
   margin: 0;
+
+  /* 移动端：调整名字样式 */
+  @media (max-width: $medium) {
+    margin-top: 0.5em;
+    margin-bottom: 0.25em;
+  }
 
   @include breakpoint($large) {
     margin-top: 10px;
@@ -202,6 +242,11 @@
 .author__pronouns {
   margin: 0;
 
+  @media (max-width: $medium) {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+  }
+
   @include breakpoint($large) {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -210,6 +255,14 @@
 
 .author__bio {
   margin: 0;
+
+  /* 移动端：调整 bio 间距 */
+  @media (max-width: $medium) {
+    margin-top: 0.25em;
+    margin-bottom: 0.75em;
+    font-size: $type-size-6;
+    color: var(--global-text-color-light);
+  }
 
   @include breakpoint($large) {
     margin-top: 10px;
@@ -230,6 +283,12 @@
     a {
       margin-bottom: 0;
     }
+  }
+
+  /* 移动端：居中显示 */
+  @media (max-width: $medium) {
+    display: block;
+    text-align: center;
   }
 
   @include breakpoint($large) {
@@ -258,6 +317,14 @@
   z-index: -1;
   box-shadow: 0 0 10px rgba(#000, 0.25);
   cursor: default;
+
+  /* 移动端：居中显示下拉菜单 */
+  @media (max-width: $medium) {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 200px;
+  }
 
   @include breakpoint($large) {
     display: block;
