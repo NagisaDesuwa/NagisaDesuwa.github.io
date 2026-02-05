@@ -130,12 +130,13 @@
   }
 
   /* 新的浏览器会话，重置音乐播放状态 */
-  /* 清除所有音乐相关的 localStorage，让播放器加载默认歌曲 */
+  /* 清除所有音乐相关的 localStorage，让播放器从默认歌曲开始 */
   localStorage.removeItem('musicCurrentTrack');
   localStorage.removeItem('musicCurrentTrackUrl');
   localStorage.removeItem('musicCurrentTime');
   localStorage.removeItem('musicWasPlaying');
   localStorage.removeItem('musicPlaylistLength');
+  localStorage.removeItem('defaultPlayOrder'); /* 重新生成播放顺序，确保"あの頃のように"在第一位 */
   console.log('🔄 浏览器重启，音乐状态已重置');
 
   /* 点击后渐隐进入网站并启动音乐 */

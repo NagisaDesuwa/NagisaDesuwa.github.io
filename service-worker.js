@@ -1,3 +1,6 @@
+---
+layout: null
+---
 /**
  * Service Worker for Nagisa的小屋
  * Provides offline support and caching for PWA
