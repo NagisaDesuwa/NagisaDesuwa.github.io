@@ -5,8 +5,8 @@
 
 <script>
 (function() {
-  // 服务器端配置（用户无法修改）
-  const CONFIG = {
+  /* 服务器端配置（用户无法修改） */
+  var CONFIG = {
     cursorStyle: '{{ site.data.cursor-config.cursor_style }}',
     trail: {
       enabled: {{ site.data.cursor-config.trail.enabled }},
@@ -40,17 +40,17 @@
 
   console.log('🎯 鼠标特效配置:', CONFIG);
 
-  // 检查是否为移动设备
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  /* 检查是否为移动设备 */
+  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
   if (isMobile) {
     console.log('📱 移动设备检测，跳过鼠标特效');
     return;
   }
 
-  // 获取光标元素
-  const cursorDot = document.querySelector('.cursor-dot');
-  const cursorOutline = document.querySelector('.cursor-outline');
+  /* 获取光标元素 */
+  var cursorDot = document.querySelector('.cursor-dot');
+  var cursorOutline = document.querySelector('.cursor-outline');
 
   if (!cursorDot || !cursorOutline) {
     console.error('❌ 找不到光标元素');
@@ -59,25 +59,25 @@
 
   console.log('✅ 光标元素已找到');
 
-  // 应用动态样式
+  /* 应用动态样式 */
   function applyDynamicStyles() {
-    // 设置光标点样式
+    /* 设置光标点样式 */
     cursorDot.style.width = CONFIG.cursor_size.dot + 'px';
     cursorDot.style.height = CONFIG.cursor_size.dot + 'px';
     cursorDot.style.background = CONFIG.cursor_size.dot_color;
 
-    // 设置光标外圈样式
+    /* 设置光标外圈样式 */
     cursorOutline.style.width = CONFIG.cursor_size.outline + 'px';
     cursorOutline.style.height = CONFIG.cursor_size.outline + 'px';
     cursorOutline.style.border = '2px solid ' + CONFIG.cursor_size.outline_color;
   }
 
-  let mouseX = 0, mouseY = 0;
-  let dotX = 0, dotY = 0;
-  let outlineX = 0, outlineY = 0;
-  let lastTrailTime = 0;
+  var mouseX = 0, mouseY = 0;
+  var dotX = 0, dotY = 0;
+  var outlineX = 0, outlineY = 0;
+  var lastTrailTime = 0;
 
-  // 应用配置的光标样式
+  /* 应用配置的光标样式 */
   function applyCursorStyle() {
     document.body.classList.remove('cursor-default', 'cursor-dot-style', 'cursor-arrow-enhanced');
 
@@ -102,14 +102,14 @@
     }
   }
 
-  // 鼠标移动事件
+  /* 鼠标移动事件 */
   document.addEventListener('mousemove', function(e) {
     mouseX = e.clientX;
     mouseY = e.clientY;
 
-    // 添加拖尾效果（根据配置）
+    /* 添加拖尾效果（根据配置） */
     if (CONFIG.trail.enabled) {
-      const now = Date.now();
+      var now = Date.now();
       if (now - lastTrailTime > CONFIG.trail.interval) {
         createTrail(mouseX, mouseY);
         lastTrailTime = now;
@@ -117,13 +117,13 @@
     }
   });
 
-  // 平滑跟随动画
+  /* 平滑跟随动画 */
   function animateCursor() {
-    // 光标点跟随（使用配置的速度）
+    /* 光标点跟随（使用配置的速度） */
     dotX += (mouseX - dotX) * CONFIG.speed.dot;
     dotY += (mouseY - dotY) * CONFIG.speed.dot;
 
-    // 外圈跟随（使用配置的速度）
+    /* 外圈跟随（使用配置的速度） */
     outlineX += (mouseX - outlineX) * CONFIG.speed.outline;
     outlineY += (mouseY - outlineY) * CONFIG.speed.outline;
 
@@ -135,42 +135,42 @@
     requestAnimationFrame(animateCursor);
   }
 
-  // 鼠标按下事件
+  /* 鼠标按下事件 */
   document.addEventListener('mousedown', function(e) {
     document.body.classList.add('dragging');
     cursorDot.classList.add('clicking');
     cursorOutline.classList.add('clicking');
 
-    // 应用点击缩放
+    /* 应用点击缩放 */
     cursorDot.style.transform = 'translate(-50%, -50%) scale(' + CONFIG.advanced.click_scale + ')';
     cursorOutline.style.transform = 'translate(-50%, -50%) scale(' + CONFIG.advanced.click_scale + ')';
 
-    // 创建点击波纹（根据配置）
+    /* 创建点击波纹（根据配置） */
     if (CONFIG.ripple.enabled) {
       createRipple(e.clientX, e.clientY);
     }
   });
 
-  // 鼠标抬起事件
+  /* 鼠标抬起事件 */
   document.addEventListener('mouseup', function() {
     document.body.classList.remove('dragging');
     cursorDot.classList.remove('clicking');
     cursorOutline.classList.remove('clicking');
 
-    // 恢复原始大小
+    /* 恢复原始大小 */
     cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
     cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
   });
 
-  // 悬停在可点击元素上
-  const hoverTargets = 'a, button, .clickable, input, textarea, select';
+  /* 悬停在可点击元素上 */
+  var hoverTargets = 'a, button, .clickable, input, textarea, select';
 
   document.addEventListener('mouseover', function(e) {
     if (e.target.matches(hoverTargets)) {
       cursorDot.classList.add('hovering');
       cursorOutline.classList.add('hovering');
 
-      // 应用悬停缩放
+      /* 应用悬停缩放 */
       cursorDot.style.transform = 'translate(-50%, -50%) scale(' + CONFIG.advanced.hover_scale + ')';
       cursorOutline.style.transform = 'translate(-50%, -50%) scale(' + CONFIG.advanced.hover_scale + ')';
     }
@@ -181,15 +181,15 @@
       cursorDot.classList.remove('hovering');
       cursorOutline.classList.remove('hovering');
 
-      // 恢复原始大小
+      /* 恢复原始大小 */
       cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
       cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
     }
   });
 
-  // 创建点击波纹效果
+  /* 创建点击波纹效果 */
   function createRipple(x, y) {
-    const ripple = document.createElement('div');
+    var ripple = document.createElement('div');
     ripple.className = 'click-ripple';
     ripple.style.width = CONFIG.ripple.size + 'px';
     ripple.style.height = CONFIG.ripple.size + 'px';
@@ -198,14 +198,14 @@
     ripple.style.top = (y - CONFIG.ripple.size / 2) + 'px';
     document.body.appendChild(ripple);
 
-    setTimeout(() => {
+    setTimeout(function() {
       ripple.remove();
     }, CONFIG.ripple.duration);
   }
 
-  // 创建鼠标拖尾效果
+  /* 创建鼠标拖尾效果 */
   function createTrail(x, y) {
-    const trail = document.createElement('div');
+    var trail = document.createElement('div');
     trail.className = 'cursor-trail';
     trail.style.width = CONFIG.trail.size + 'px';
     trail.style.height = CONFIG.trail.size + 'px';
@@ -215,12 +215,12 @@
     trail.style.top = y + 'px';
     document.body.appendChild(trail);
 
-    setTimeout(() => {
+    setTimeout(function() {
       trail.remove();
     }, CONFIG.trail.lifetime);
   }
 
-  // 应用所有样式和配置
+  /* 应用所有样式和配置 */
   applyDynamicStyles();
   applyCursorStyle();
   animateCursor();
