@@ -1590,3 +1590,38 @@ body {
         display: block;
     }
 }
+
+/* ========================================
+   汉堡菜单图标尺寸调整
+   ======================================== */
+
+/* 缩小汉堡菜单图标 - 原始 28px x 4px，调整为 20px x 3px */
+.navicon {
+    width: 20px;
+    height: 3px;
+}
+
+.navicon::before,
+.navicon::after {
+    width: 20px;
+    height: 3px;
+}
+
+.navicon::before {
+    top: -6px;  /* -2 * 3px */
+}
+
+.navicon::after {
+    bottom: -6px;  /* -2 * 3px */
+}
+
+.close .navicon::before,
+.close .navicon::after {
+    width: 20px;
+}
+
+/* 调整汉堡菜单按钮的点击区域 */
+.greedy-nav button {
+    height: 2rem;
+    padding: 0 0.4rem;
+}
