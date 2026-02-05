@@ -295,7 +295,7 @@ body.page-show {
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4169E1 0%, #87CEFA 100%);
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
 }
@@ -336,8 +336,8 @@ body.page-show {
 /* 滚动渐变效果 */
 .scroll-gradient {
     background: linear-gradient(to bottom,
-        rgba(102, 126, 234, 0.8) 0%,
-        rgba(118, 75, 162, 0.6) 50%,
+        rgba(65, 105, 225, 0.8) 0%,
+        rgba(135, 206, 250, 0.6) 50%,
         rgba(255, 255, 255, 0) 100%
     );
     transition: background 0.3s ease;
@@ -372,12 +372,12 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4169E1 0%, #87CEFA 100%);
     border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #764ba2;
+    background: #87CEFA;
 }
 
 /* 页面加载动画 */
@@ -430,7 +430,7 @@ html {
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4169E1 0%, #87CEFA 100%);
     color: white;
     border-radius: 12px 12px 0 0;
     cursor: move;
@@ -502,7 +502,7 @@ html {
 }
 
 .control-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4169E1 0%, #87CEFA 100%);
     border: none;
     color: white;
     width: 40px;
@@ -514,12 +514,12 @@ html {
     align-items: center;
     justify-content: center;
     transition: all 0.2s;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 2px 8px rgba(65, 105, 225, 0.3);
 }
 
 .control-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 4px 12px rgba(65, 105, 225, 0.5);
 }
 
 .control-btn:active {
@@ -567,7 +567,7 @@ html {
     appearance: none;
     width: 12px;
     height: 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4169E1 0%, #87CEFA 100%);
     border-radius: 50%;
     cursor: pointer;
     transition: transform 0.2s;
@@ -582,7 +582,7 @@ html {
 .volume-bar::-moz-range-thumb {
     width: 12px;
     height: 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4169E1 0%, #87CEFA 100%);
     border-radius: 50%;
     cursor: pointer;
     border: none;
@@ -634,7 +634,7 @@ html {
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4169E1 0%, #87CEFA 100%);
     color: white;
     font-size: 14px;
     font-weight: 600;
@@ -669,17 +669,17 @@ html {
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s;
-    background: rgba(102, 126, 234, 0.05);
+    background: rgba(65, 105, 225, 0.05);
 }
 
 .playlist-item:hover {
-    background: rgba(102, 126, 234, 0.15);
+    background: rgba(65, 105, 225, 0.15);
     transform: translateX(4px);
 }
 
 .playlist-item.active {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-    border-left: 3px solid #667eea;
+    background: linear-gradient(135deg, rgba(65, 105, 225, 0.2) 0%, rgba(135, 206, 250, 0.2) 100%);
+    border-left: 3px solid #4169E1;
 }
 
 .playlist-item-title {
@@ -711,12 +711,12 @@ html {
 }
 
 .playlist-items::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4169E1 0%, #87CEFA 100%);
     border-radius: 3px;
 }
 
 .playlist-items::-webkit-scrollbar-thumb:hover {
-    background: #764ba2;
+    background: #87CEFA;
 }
 
 /* 响应式设计 - 音乐播放器 */
@@ -769,7 +769,7 @@ html {
 .cursor-dot {
     width: 8px;
     height: 8px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4169E1 0%, #87CEFA 100%);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
@@ -779,7 +779,7 @@ html {
 .cursor-outline {
     width: 32px;
     height: 32px;
-    border: 2px solid rgba(102, 126, 234, 0.5);
+    border: 2px solid rgba(65, 105, 225, 0.5);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
@@ -789,13 +789,13 @@ html {
 .cursor-dot.clicking {
     width: 12px;
     height: 12px;
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    background: linear-gradient(135deg, #87CEFA 0%, #4169E1 100%);
 }
 
 .cursor-outline.clicking {
     width: 24px;
     height: 24px;
-    border-color: rgba(118, 75, 162, 0.8);
+    border-color: rgba(135, 206, 250, 0.8);
 }
 
 /* 悬停链接时的光标效果 */
@@ -841,14 +841,14 @@ body.cursor-dot-style .clickable {
 
 /* 自定义光标主题 - 箭头增强 */
 body.cursor-arrow-enhanced {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23667eea" d="M3 3l18 9-18 9V3z"/></svg>') 8 8, auto;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%234169E1" d="M3 3l18 9-18 9V3z"/></svg>') 8 8, auto;
 }
 
 /* 点击波纹效果 */
 .click-ripple {
     position: fixed;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(102, 126, 234, 0.4) 0%, rgba(118, 75, 162, 0) 70%);
+    background: radial-gradient(circle, rgba(65, 105, 225, 0.4) 0%, rgba(135, 206, 250, 0) 70%);
     pointer-events: none;
     z-index: 99997;
     animation: ripple 0.8s ease-out forwards;
@@ -873,7 +873,7 @@ body.cursor-arrow-enhanced {
     pointer-events: none;
     width: 6px;
     height: 6px;
-    background: rgba(102, 126, 234, 0.6);
+    background: rgba(65, 105, 225, 0.6);
     border-radius: 50%;
     z-index: 99996;
     animation: trailFade 0.6s ease-out forwards;
@@ -918,7 +918,7 @@ body.cursor-arrow-enhanced {
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4169E1 0%, #87CEFA 100%);
     color: white;
     border-radius: 12px 12px 0 0;
     font-size: 14px;
@@ -949,7 +949,7 @@ body.cursor-arrow-enhanced {
 .cursor-style-option {
     padding: 10px 12px;
     margin-bottom: 8px;
-    background: rgba(102, 126, 234, 0.05);
+    background: rgba(65, 105, 225, 0.05);
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s;
@@ -957,13 +957,13 @@ body.cursor-arrow-enhanced {
 }
 
 .cursor-style-option:hover {
-    background: rgba(102, 126, 234, 0.15);
+    background: rgba(65, 105, 225, 0.15);
     transform: translateX(4px);
 }
 
 .cursor-style-option.active {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-    border-color: #667eea;
+    background: linear-gradient(135deg, rgba(65, 105, 225, 0.2) 0%, rgba(135, 206, 250, 0.2) 100%);
+    border-color: #4169E1;
 }
 
 .cursor-style-title {
@@ -983,7 +983,7 @@ body.cursor-arrow-enhanced {
     justify-content: space-between;
     align-items: center;
     padding: 12px;
-    background: rgba(102, 126, 234, 0.05);
+    background: rgba(65, 105, 225, 0.05);
     border-radius: 6px;
     margin-top: 12px;
 }
@@ -1005,7 +1005,7 @@ body.cursor-arrow-enhanced {
 }
 
 .toggle-switch.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4169E1 0%, #87CEFA 100%);
 }
 
 .toggle-switch-knob {
@@ -1030,14 +1030,14 @@ body.cursor-arrow-enhanced {
     right: 20px;
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4169E1 0%, #87CEFA 100%);
     border: none;
     border-radius: 50%;
     color: white;
     font-size: 20px;
     cursor: pointer;
     z-index: 9997;
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 16px rgba(65, 105, 225, 0.4);
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
@@ -1046,7 +1046,7 @@ body.cursor-arrow-enhanced {
 
 .cursor-config-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    box-shadow: 0 6px 20px rgba(65, 105, 225, 0.6);
 }
 
 .cursor-config-btn:active {

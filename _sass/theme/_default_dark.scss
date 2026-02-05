@@ -1,32 +1,40 @@
 /* ==========================================================================
     DEFAULT THEME - DARK VERSION
+    神奈备命 (Kanna) 配色主题 - 暗色版本
+    主色调: #4169E1 (宝石蓝紫色 - 瞳孔色)
+    辅助色1: #87CEFA (浅天蓝)
+    辅助色2: #F0E68C (卡其黄)
+    辅助色3: #2E8B57 (海绿色)
     ========================================================================== */
 
 /* Color codes used for the theme */
-$primary-color              : #0ea1c5;
+$primary-color              : #5A7FE8;
+$secondary-color            : #87CEFA;
+$accent-color-1             : #F0E68C;
+$accent-color-2             : #3CB371;
 $gray                       : #7a8288;
 $dark-gray                  : mix(#000, $gray, 40%);
 $darker-gray                : mix(#000, $gray, 60%);
 $light-gray                 : mix(#fff, $gray, 50%);
 
-$background                 : #474747;
+$background                 : #1a1a2e;
 $background-light           : mix(#fff, $background, 80%);
 $background-lighter         : mix(#fff, $background, 90%);
-$text                       : #ffffff;
-$link                       : #0ea1c5;
-$link-dark                  : mix(#000, $link, 25%);
-$link-light                 : mix(#fff, $link, 25%);
+$text                       : #F8F9FA;
+$link                       : #87CEFA;
+$link-dark                  : mix(#000, $link, 15%);
+$link-light                 : mix(#fff, $link, 20%);
 
 /* Color codes used for the site */
 $danger-color               : #ee5f5b;
-$info-color                 : #2f7f93;
+$info-color                 : #5A7FE8;
 $notice-color               : #7a8288;
-$success-color              : #62c462;
-$warning-color              : #f89406;
+$success-color              : #3CB371;
+$warning-color              : #F0E68C;
 
 /* Other basic settings for the template */
 $border-radius              : 4px;
-$box-shadow                 : 0 1px 1px rgba(0, 0, 0, 0.125);
+$box-shadow                 : 0 1px 1px rgba(65, 105, 225, 0.2);
 $global-transition          : all 0.2s ease-in-out;
 $masthead-height            : 70px;
 $navicon-width              : 28px;
@@ -38,19 +46,19 @@ $sidebar-screen-min-width   : 1024px;
 html[data-theme="dark"] {
     --global-base-color                 : #{$primary-color};
     --global-bg-color                   : #{$background};
-    --global-footer-bg-color            : #{$background};
+    --global-footer-bg-color            : #16162a;
     --global-border-color               : #{$light-gray};
     --global-dark-border-color          : #{$background-light};
-    --global-code-background-color      : #fafafa;
-    --global-code-text-color            : #{$darker-gray};
+    --global-code-background-color      : #2a2a3e;
+    --global-code-text-color            : #E9ECEF;
     --global-fig-caption-color          : #{$light-gray};
     --global-link-color                 : #{$link};
-    --global-link-color-hover           : #{$link-dark};
+    --global-link-color-hover           : #{$primary-color};
     --global-link-color-visited         : #{$link-light};
     --global-masthead-link-color        : #{$text};
-    --global-masthead-link-color-hover  : #{$primary-color};
+    --global-masthead-link-color-hover  : #{$secondary-color};
     --global-text-color                 : #{$text};
-    --global-text-color-light           : #f3f3f3;
-    --global-thead-color                : #{$background-lighter};
+    --global-text-color-light           : #E9ECEF;
+    --global-thead-color                : #2a2a3e;
 }
 
