@@ -257,6 +257,10 @@
         &#theme-toggle {
           display: none !important;
         }
+        /* 移动端显示搜索框 */
+        &#site-search {
+          display: flex !important;
+        }
       }
 
       &:first-child {
@@ -317,6 +321,11 @@
     margin-top: 15px;
     padding: 5px;
     border: 1px solid var(--global-border-color);
+
+    /* 移动端：减少菜单间距 */
+    @media (max-width: $small) {
+      margin-top: 5px;
+    }
     border-radius: $border-radius;
     background: var(--global-bg-color);
     box-shadow: 0 0 10px rgba(#000, 0.25);

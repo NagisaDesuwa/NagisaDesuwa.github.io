@@ -20,7 +20,8 @@
   /* 移动端：优化侧边栏整体布局 */
   @media (max-width: $medium) {
     padding: 1em;
-    margin: 0.5em;
+    margin: 0;
+    margin-top: 0.5em;
     background: var(--global-bg-color);
     border: 1px solid var(--global-border-color);
     border-radius: 8px;
@@ -67,6 +68,13 @@
 
   img {
     width: 100%;
+  }
+
+  /* 移动端头像不应该 100% 宽度 */
+  .author__avatar img {
+    @media (max-width: $medium) {
+      width: auto !important;
+    }
   }
 }
 
@@ -150,6 +158,15 @@
    Author profile and links
    ========================================================================== */
 
+/* 作者信息父容器 - 移动端垂直居中布局 */
+.sidebar [itemscope] {
+  @media (max-width: $medium) {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+}
+
 .author__avatar {
   display: table-cell;
   vertical-align: top;
@@ -159,10 +176,10 @@
 
   /* 移动端：居中显示头像 */
   @media (max-width: $medium) {
-    display: block;
-    width: auto;
+    display: block !important;
+    width: auto !important;
     text-align: center;
-    margin-bottom: 0.75em;
+    margin-bottom: 0.5em;
   }
 
   @include breakpoint($large) {
@@ -178,6 +195,7 @@
     /* 移动端：限制头像大小 */
     @media (max-width: $medium) {
       max-width: 100px;
+      width: 100px;
       padding: 3px;
       border: 1px solid var(--global-border-color);
     }
@@ -198,10 +216,10 @@
 
   /* 移动端：居中显示内容 */
   @media (max-width: $medium) {
-    display: block;
-    width: 100%;
-    padding-left: 0;
-    padding-right: 0;
+    display: block !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     text-align: center;
   }
 
@@ -276,7 +294,6 @@
   vertical-align: middle;
   font-family: $sans-serif;
   z-index: 10;
-  position: relative;
   cursor: pointer;
 
   li:last-child {
@@ -287,8 +304,10 @@
 
   /* 移动端：居中显示 */
   @media (max-width: $medium) {
-    display: block;
+    display: block !important;
     text-align: center;
+    width: 100%;
+    margin-top: 0.5em;
   }
 
   @include breakpoint($large) {
