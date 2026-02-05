@@ -249,6 +249,9 @@
   }
 
   /* 加载歌曲 */
+  var loadRetryCount = 0;
+  var maxLoadRetries = 3;
+
   function loadTrack(index) {
     if (playlist.length === 0) return;
     currentTrack = index;
@@ -257,11 +260,57 @@
     audio.src = track.url;
     songTitle.textContent = track.title;
     songArtist.textContent = track.artist || '';
+    loadRetryCount = 0; /* 重置重试计数 */
     renderPlaylist();
 
     /* 标记播放器已准备好 */
     window.musicPlayerReady = true;
   }
+
+  /* 音频加载错误处理 */
+  audio.addEventListener('error', function(e) {
+    var error = audio.error;
+    var errorMessages = {
+      1: '加载被中止',
+      2: '网络错误',
+      3: '解码失败',
+      4: '不支持的格式'
+    };
+    var errorCode = error ? error.code : 0;
+    var errorMsg = errorMessages[errorCode] || '未知错误';
+
+    console.log('⚠️ 音频加载失败: ' + errorMsg + ' (' + playlist[getActualIndex(currentTrack)].title + ')');
+
+    /* 重试加载 */
+    if (loadRetryCount < maxLoadRetries) {
+      loadRetryCount++;
+      console.log('🔄 尝试重新加载... (' + loadRetryCount + '/' + maxLoadRetries + ')');
+      setTimeout(function() {
+        var track = playlist[getActualIndex(currentTrack)];
+        /* 添加时间戳绕过缓存 */
+        audio.src = track.url + '?t=' + Date.now();
+      }, 1000 * loadRetryCount); /* 递增延迟 */
+    } else {
+      /* 重试失败，尝试播放下一首 */
+      console.log('❌ 加载失败，跳过此曲');
+      songTitle.textContent = '加载失败: ' + errorMsg;
+      setTimeout(function() {
+        if (playlist.length > 1) {
+          currentTrack = (currentTrack + 1) % playlist.length;
+          loadTrack(currentTrack);
+        }
+      }, 2000);
+    }
+  });
+
+  /* 网络中断时的处理 */
+  audio.addEventListener('stalled', function() {
+    console.log('⚠️ 音频加载停滞，可能网络不稳定');
+  });
+
+  audio.addEventListener('waiting', function() {
+    console.log('⏳ 正在缓冲...');
+  });
 
   /* 保存播放状态到 localStorage */
   function savePlayState() {
