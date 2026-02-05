@@ -11,11 +11,12 @@ $primary-color              : #4169E1;
 $secondary-color            : #87CEFA;
 $accent-color-1             : #F0E68C;
 $accent-color-2             : #2E8B57;
-$gray                       : #7a8288;
-$dark-gray                  : mix(#000, $gray, 40%);
-$darker-gray                : mix(#000, $gray, 60%);
-$light-gray                 : mix(#fff, $gray, 50%);
-$lighter-gray               : mix(#fff, $gray, 90%);
+/* 使用纯净的中性灰色系统，避免偏绿 */
+$gray                       : #6c757d;
+$dark-gray                  : #495057;
+$darker-gray                : #343A40;
+$light-gray                 : #ADB5BD;
+$lighter-gray               : #DEE2E6;
 
 /* Color codes used for the site */
 $danger-color               : #ee5f5b;
@@ -38,19 +39,19 @@ $sidebar-screen-min-width   : 1024px;
 :root {
     --global-base-color                 : #{$primary-color};
     --global-bg-color                   : #F8F9FA;
-    --global-footer-bg-color            : #E9ECEF;
+    --global-footer-bg-color            : #F1F3F5;
     --global-border-color               : #{$lighter-gray};
-    --global-dark-border-color          : #bdc1c4;
-    --global-code-background-color      : #fafafa;
+    --global-dark-border-color          : #{$light-gray};
+    --global-code-background-color      : #F8F9FA;
     --global-code-text-color            : #{$darker-gray};
-    --global-fig-caption-color          : mix(#fff,  #{$dark-gray}, 25%);
+    --global-fig-caption-color          : #{$gray};
     --global-link-color                 : #4169E1;
-    --global-link-color-hover           : mix(#000, #4169E1, 15%);
-    --global-link-color-visited         : mix(#fff, #4169E1, 20%);
-    --global-masthead-link-color        : #343A40;
+    --global-link-color-hover           : #2E54C7;
+    --global-link-color-visited         : #5A7FE8;
+    --global-masthead-link-color        : #{$darker-gray};
     --global-masthead-link-color-hover  : #4169E1;
-    --global-text-color                 : #343A40;
-    --global-text-color-light           : #{$light-gray};
-    --global-thead-color                : #E9ECEF;
+    --global-text-color                 : #{$darker-gray};
+    --global-text-color-light           : #{$gray};
+    --global-thead-color                : #F1F3F5;
 }
 
