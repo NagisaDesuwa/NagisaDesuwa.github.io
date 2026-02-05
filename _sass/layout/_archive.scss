@@ -655,7 +655,7 @@
 .tag-menu__title {
   font-size: $type-size-5;
   font-weight: 700;
-  margin: 0 0 0.75em;
+  margin: 0 0 1.2em;
   color: var(--global-text-color);
 
   i {
@@ -665,7 +665,7 @@
 
   /* 移动端：减少标题间距 */
   @media (max-width: $medium) {
-    margin-bottom: 0.5em;
+    margin-bottom: 0.8em;
   }
 }
 
