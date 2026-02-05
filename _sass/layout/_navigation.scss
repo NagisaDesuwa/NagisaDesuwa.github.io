@@ -586,18 +586,62 @@
     -webkit-box-orient: vertical;
   }
 
-  // 响应式设计
+  /* 响应式设计 - 平板 */
   @include breakpoint($small) {
     .search-input {
-      width: 150px;
+      width: 120px;
+      padding: 6px 10px 6px 32px;
+      font-size: 12px;
 
       &:focus {
-        width: 200px;
+        width: 180px;
       }
     }
 
     .search-results {
-      width: 300px;
+      width: 280px;
+    }
+  }
+
+  /* 响应式设计 - 手机 (使用 max-width media query) */
+  @media (max-width: 480px) {
+    right: 0.5em !important;
+
+    .search-container {
+      margin-left: 0;
+    }
+
+    .search-input {
+      width: 0;
+      padding: 6px 0 6px 28px;
+      border: none;
+      background: transparent;
+
+      &::placeholder {
+        opacity: 0;
+      }
+
+      &:focus {
+        width: 130px;
+        padding: 6px 10px 6px 28px;
+        border: 1px solid var(--global-border-color);
+        background: var(--global-bg-color);
+
+        &::placeholder {
+          opacity: 1;
+        }
+      }
+    }
+
+    .search-icon {
+      cursor: pointer;
+      pointer-events: auto;
+      left: 8px;
+    }
+
+    .search-results {
+      width: calc(100vw - 2em);
+      right: -0.5em;
     }
   }
 }
