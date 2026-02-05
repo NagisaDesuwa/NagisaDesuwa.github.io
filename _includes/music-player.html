@@ -23,7 +23,7 @@
       <span class="time" id="duration">0:00</span>
     </div>
     <div class="volume-container">
-      <span>🔊</span>
+      <button class="mute-btn" id="mute-btn" title="静音">🔊</button>
       <input type="range" class="volume-bar" id="volume-bar" min="0" max="100" value="30">
     </div>
     <div class="playlist-panel" id="playlist-panel">
@@ -64,6 +64,8 @@
   var playlistPanel = document.getElementById('playlist-panel');
   var playlistItems = document.getElementById('playlist-items');
   var playlistClose = document.getElementById('playlist-close');
+  var muteBtn = document.getElementById('mute-btn');
+  var volumeBeforeMute = 0.3; /* 保存静音前的音量 */
 
   /* 从文件路径提取歌曲信息 */
   function extractSongInfo(path) {
@@ -252,13 +254,23 @@
   var loadRetryCount = 0;
   var maxLoadRetries = 3;
 
+  /* 对音频 URL 进行正确编码（保留路径分隔符，编码文件名中的特殊字符） */
+  function encodeAudioUrl(url) {
+    var parts = url.split('/');
+    var filename = parts.pop();
+    /* 对文件名进行完整编码，然后恢复安全字符 */
+    var encodedFilename = encodeURIComponent(filename);
+    parts.push(encodedFilename);
+    return parts.join('/');
+  }
+
   function loadTrack(index) {
     if (playlist.length === 0) return;
     currentTrack = index;
     var actualIndex = getActualIndex(currentTrack);
     var track = playlist[actualIndex];
     /* 对 URL 进行编码，处理特殊字符（双空格、中文、括号等） */
-    audio.src = encodeURI(track.url);
+    audio.src = encodeAudioUrl(track.url);
     songTitle.textContent = track.title;
     songArtist.textContent = track.artist || '';
     loadRetryCount = 0; /* 重置重试计数 */
@@ -289,7 +301,7 @@
       setTimeout(function() {
         var track = playlist[getActualIndex(currentTrack)];
         /* 添加时间戳绕过缓存，并对 URL 进行编码 */
-        audio.src = encodeURI(track.url) + '?t=' + Date.now();
+        audio.src = encodeAudioUrl(track.url) + '?t=' + Date.now();
       }, 1000 * loadRetryCount); /* 递增延迟 */
     } else {
       /* 重试失败，尝试播放下一首 */
@@ -299,6 +311,11 @@
         if (playlist.length > 1) {
           currentTrack = (currentTrack + 1) % playlist.length;
           loadTrack(currentTrack);
+          audio.play().then(function() {
+            playBtn.textContent = '⏸';
+          }).catch(function() {
+            playBtn.textContent = '▶';
+          });
         }
       }, 2000);
     }
@@ -464,6 +481,40 @@
   /* 音量控制 */
   volumeBar.addEventListener('input', function(e) {
     audio.volume = e.target.value / 100;
+    updateVolumeIcon();
+    /* 如果手动调节音量，更新静音前的音量值 */
+    if (audio.volume > 0) {
+      volumeBeforeMute = audio.volume;
+    }
+  });
+
+  /* 更新音量图标 */
+  function updateVolumeIcon() {
+    if (audio.volume === 0) {
+      muteBtn.textContent = '🔇';
+      muteBtn.title = '取消静音';
+    } else if (audio.volume < 0.5) {
+      muteBtn.textContent = '🔉';
+      muteBtn.title = '静音';
+    } else {
+      muteBtn.textContent = '🔊';
+      muteBtn.title = '静音';
+    }
+  }
+
+  /* 静音按钮 */
+  muteBtn.addEventListener('click', function() {
+    if (audio.volume > 0) {
+      /* 静音 */
+      volumeBeforeMute = audio.volume;
+      audio.volume = 0;
+      volumeBar.value = 0;
+    } else {
+      /* 取消静音 */
+      audio.volume = volumeBeforeMute || 0.3;
+      volumeBar.value = audio.volume * 100;
+    }
+    updateVolumeIcon();
   });
 
   /* 设置初始音量 */
