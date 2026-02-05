@@ -47,8 +47,15 @@ body.page-show {
     left: 0;
     width: 100%;
     height: 100vh;
+    height: 100dvh; /* 动态视口高度，解决移动端地址栏问题 */
+    min-height: 100%;
     z-index: 99999;
-    background: url('/images/banner.jpg') center/cover no-repeat;
+    background-image: url('/images/banner.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* 移动端不支持 fixed */
+    -webkit-background-size: cover;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -144,6 +151,12 @@ body.page-show {
 
 /* 响应式设计 - 入口大门 */
 @media (max-width: 768px) {
+    .entrance-gate {
+        background-size: cover;
+        background-position: center center;
+        -webkit-background-size: cover;
+    }
+
     .gate-title {
         font-size: 2.5em;
     }
@@ -158,6 +171,12 @@ body.page-show {
 }
 
 @media (max-width: 480px) {
+    .entrance-gate {
+        background-size: cover;
+        background-position: center center;
+        -webkit-background-size: cover;
+    }
+
     .gate-title {
         font-size: 1.8em;
     }
@@ -172,15 +191,19 @@ body.page-show {
 }
 
 /* Hero Banner - 顶部图片展示区（带颜色遮罩） */
-.page__hero {
+.page__hero,
+.page__hero--overlay {
     position: relative;
     width: 100%;
     height: 100vh;
+    height: 100dvh; /* 动态视口高度，解决移动端地址栏问题 */
     min-height: 300px;
     max-height: 600px;
     background-size: cover;
     background-position: center 20%;
     background-repeat: no-repeat;
+    background-attachment: scroll; /* 移动端不支持 fixed */
+    -webkit-background-size: cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -256,10 +279,15 @@ body.page-show {
 
 /* 响应式设计 - Hero Banner */
 @media (max-width: 768px) {
-    .page__hero {
+    .page__hero,
+    .page__hero--overlay {
         height: 40vh;
         min-height: 250px;
         max-height: 400px;
+        background-size: cover !important;
+        background-position: center center !important;
+        background-repeat: no-repeat !important;
+        -webkit-background-size: cover !important;
     }
 
     .page__hero .page__title {
@@ -269,13 +297,22 @@ body.page-show {
     .page__hero .page__lead {
         font-size: 1.2em;
     }
+
+    .page__hero .wrapper,
+    .page__hero--overlay .wrapper {
+        padding: 1em;
+    }
 }
 
 @media (max-width: 480px) {
-    .page__hero {
+    .page__hero,
+    .page__hero--overlay {
         height: 35vh;
         min-height: 200px;
         max-height: 300px;
+        background-size: cover !important;
+        background-position: center center !important;
+        -webkit-background-size: cover !important;
     }
 
     .page__hero .page__title {
@@ -284,6 +321,11 @@ body.page-show {
 
     .page__hero .page__lead {
         font-size: 1em;
+    }
+
+    .page__hero .wrapper,
+    .page__hero--overlay .wrapper {
+        padding: 0.75em;
     }
 }
 
