@@ -1653,9 +1653,9 @@ body {
         margin-left: 0;
     }
 
-    /* 搜索框紧凑化 */
+    /* 搜索框紧凑化 - 位置在汉堡菜单左边 */
     #site-search {
-        right: 0.5em !important;
+        right: 2.5em !important;
     }
 
     #site-search .search-input {
@@ -1678,12 +1678,23 @@ body {
         width: 20px;
         margin: 0 0.3rem;
     }
+
+    /* 汉堡菜单按钮位置微调 */
+    .greedy-nav button {
+        right: 0;
+        padding: 0 0.5em;
+    }
 }
 
 /* 小手机：进一步优化 */
 @media (max-width: 480px) {
     .masthead__inner-wrap {
         padding: 0.35em 0.5em;
+    }
+
+    /* 搜索框位置 - 在汉堡菜单左边 */
+    #site-search {
+        right: 2.2em !important;
     }
 
     /* 隐藏搜索框文本输入，只保留图标 */
@@ -1722,6 +1733,12 @@ body {
         width: 18px;
         margin: 0 0.2rem;
     }
+
+    /* 汉堡菜单按钮 */
+    .greedy-nav button {
+        right: 0;
+        padding: 0 0.4em;
+    }
 }
 
 /* 极小屏幕：最紧凑模式 */
@@ -1739,12 +1756,18 @@ body {
         font-size: 0.9em;
     }
 
+    /* 搜索框位置 */
     #site-search {
-        right: 0.3em !important;
+        right: 2em !important;
     }
 
     #site-search .search-input:focus {
-        width: 120px;
+        width: 110px;
+    }
+
+    /* 汉堡菜单按钮 */
+    .greedy-nav button {
+        padding: 0 0.3em;
     }
 }
 

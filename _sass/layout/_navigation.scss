@@ -605,7 +605,8 @@
 
   /* 响应式设计 - 手机 (使用 max-width media query) */
   @media (max-width: 480px) {
-    right: 0.5em !important;
+    /* 位置在汉堡菜单按钮左边 */
+    right: 2.2em !important;
 
     .search-container {
       margin-left: 0;
@@ -641,7 +642,7 @@
 
     .search-results {
       width: calc(100vw - 2em);
-      right: -0.5em;
+      right: -1.5em;
     }
   }
 }
