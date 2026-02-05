@@ -25,3 +25,4 @@ start-server.bat
 .claude/settings.local.json
 nul
 .gitignore
+CLAUDE.md

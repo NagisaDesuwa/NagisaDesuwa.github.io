@@ -2146,3 +2146,140 @@ body {
         margin-bottom: 0.5em;
     }
 }
+
+/* ========================================
+   移动端适配优化（修复溢出、间距、图片问题）
+   ======================================== */
+
+/* 1. 文字溢出防护 - 全局 word-break */
+.page__title,
+.page__content,
+.archive__item-title,
+.tag-menu__item,
+.masthead__menu-item,
+.song-title,
+.playlist-item-title,
+.author__name,
+.page__taxonomy-item {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* 2. 图片适配 - 确保所有图片不超出容器 */
+figure img,
+.archive__item-teaser img,
+.page__content img,
+.page__hero img,
+.entrance-gate img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* 3. 移动端字体最小值修复 */
+@media (max-width: 768px) {
+    /* 时间标签：11px → 13px */
+    .time {
+        font-size: 13px;
+    }
+
+    /* 播放列表艺术家：11px → 13px */
+    .playlist-item-artist {
+        font-size: 13px;
+    }
+
+    /* 播放列表标题：13px → 14px */
+    .playlist-item-title {
+        font-size: 14px;
+    }
+
+    /* 歌手名：12px → 14px */
+    .song-artist {
+        font-size: 14px;
+    }
+
+    /* 光标样式描述：11px → 13px */
+    .cursor-style-desc {
+        font-size: 13px;
+    }
+
+    /* 光标样式标题：13px → 14px */
+    .cursor-style-title {
+        font-size: 14px;
+    }
+
+    /* 分类标签间距优化 */
+    .page__taxonomy-item {
+        margin-right: 8px;
+        margin-bottom: 10px;
+        padding: 8px 12px;
+    }
+}
+
+/* 4. 超小屏幕优化 (480px 以下) */
+@media (max-width: 480px) {
+    /* 音乐播放器按钮触摸区域优化：40x40 → 44x44 */
+    .control-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+    }
+
+    .play-btn {
+        width: 52px;
+        height: 52px;
+        font-size: 20px;
+    }
+
+    /* 播放器控件间距优化 */
+    .player-controls {
+        gap: 16px;
+    }
+
+    /* 侧边栏链接间距优化 */
+    .author__urls li a {
+        padding: 0.5em 0.75em;
+        font-size: 0.85em;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+
+    /* 标签间距优化 */
+    .tag-menu__list {
+        gap: 0.6em 0.8em;
+    }
+
+    .tag-menu__item {
+        padding: 0.5em 0.9em;
+        gap: 0.4em;
+    }
+
+    /* 分类标签在超小屏幕上的优化 */
+    .page__taxonomy-item {
+        margin-right: 6px;
+        margin-bottom: 8px;
+        padding: 6px 10px;
+        font-size: 0.85em;
+    }
+
+    /* 时间标签确保可读 */
+    .time {
+        font-size: 12px;
+        min-width: 40px;
+    }
+
+    /* 播放列表项目间距 */
+    .playlist-item {
+        padding: 12px 14px;
+        margin-bottom: 6px;
+    }
+
+    /* Hero 区域高度限制 */
+    .page__hero,
+    .page__hero--overlay {
+        max-height: 50vh;
+        min-height: 250px;
+    }
+}

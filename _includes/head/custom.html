@@ -2,17 +2,20 @@
 
 <!-- start custom head snippets -->
 
-<!-- Font Awesome 6.7.2 (本地托管) -->
-<link rel="stylesheet" href="{{ base_path }}/assets/css/fontawesome-all.min.css"/>
-<!-- Font Awesome v4/v5 兼容层 - 让旧的 fa fa-xxx 语法继续工作 -->
-<link rel="stylesheet" href="{{ base_path }}/assets/css/fontawesome-v4-shims.min.css"/>
+<!-- Font Awesome 6.7.2 (CDN) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+<!-- Font Awesome v4 兼容层 (CDN) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/v4-shims.min.css" integrity="sha512-bfFPe4e5UIK/xc5uSoPypRNRlzLTMCL0aGj7SKB7R5Zx+dIWPODr3X9cKkfPJJwgMhfLl0m65gGdOXP5lV2KfA==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
-<!-- Support for Academicons -->
-<link rel="stylesheet" href="{{ base_path }}/assets/css/academicons.css"/>
+<!-- Support for Academicons (CDN) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"/>
 
 <!-- favicon - 使用 profile 头像 -->
 <link rel="apple-touch-icon" href="{{ base_path }}/images/profile.png"/>
 <link rel="icon" type="image/png" href="{{ base_path }}/images/profile.png"/>
 <meta name="theme-color" content="#4169E1"/>
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="/manifest.json"/>
 
 <!-- end custom head snippets -->
