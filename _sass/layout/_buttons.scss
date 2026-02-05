@@ -119,8 +119,6 @@
 
   $social:
   (x, $x-color),
-  (zhihu, $zhihu-color),
-  (bilibili, $bilibili-color),
   (twitter, $twitter-color);
 
   @each $socialnetwork, $color in $social {

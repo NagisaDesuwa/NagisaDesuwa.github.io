@@ -1,0 +1,36 @@
+#!/bin/sh
+# Git pre-commit hook: 自动修复音频文件名
+# 安装方法: cp scripts/hooks/pre-commit .git/hooks/pre-commit
+
+echo "🎵 检查音频文件名..."
+
+# 获取仓库根目录
+REPO_ROOT=$(git rev-parse --show-toplevel)
+AUDIO_DIR="$REPO_ROOT/audio"
+FIXED_COUNT=0
+
+# 遍历音频目录
+for file in "$AUDIO_DIR"/*; do
+    if [ -f "$file" ]; then
+        filename=$(basename "$file")
+        dir=$(dirname "$file")
+
+        # 检查是否有连续空格
+        if echo "$filename" | grep -q '  '; then
+            # 修复双空格为单空格
+            newname=$(echo "$filename" | sed 's/  */ /g')
+            echo "📝 修复: '$filename' -> '$newname'"
+            mv "$file" "$dir/$newname"
+            git add "$dir/$newname"
+            FIXED_COUNT=$((FIXED_COUNT + 1))
+        fi
+    fi
+done
+
+if [ $FIXED_COUNT -gt 0 ]; then
+    echo "✅ 已修复 $FIXED_COUNT 个文件名，已添加到暂存区"
+else
+    echo "✅ 所有文件名正常"
+fi
+
+exit 0

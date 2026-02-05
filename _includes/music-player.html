@@ -333,6 +333,9 @@
   /* 保存播放状态到 localStorage */
   function savePlayState() {
     if (playlist.length > 0 && audio.src) {
+      /* 保存当前歌曲的 URL（而非索引），确保页面切换后能准确恢复 */
+      var actualIndex = getActualIndex(currentTrack);
+      localStorage.setItem('musicCurrentTrackUrl', playlist[actualIndex].url);
       localStorage.setItem('musicCurrentTrack', currentTrack);
       localStorage.setItem('musicCurrentTime', audio.currentTime || 0);
       localStorage.setItem('musicVolume', audio.volume);
@@ -652,6 +655,7 @@
       }
 
       /* 尝试恢复之前的播放状态 */
+      var savedTrackUrl = localStorage.getItem('musicCurrentTrackUrl');
       var savedTrack = localStorage.getItem('musicCurrentTrack');
       var savedTime = localStorage.getItem('musicCurrentTime');
       var savedVolume = localStorage.getItem('musicVolume');
@@ -661,16 +665,57 @@
       if (savedVolume) {
         audio.volume = parseFloat(savedVolume);
         volumeBar.value = audio.volume * 100;
+        updateVolumeIcon();
       } else {
         audio.volume = 0.3;
         volumeBar.value = 30;
       }
 
-      /* 恢复歌曲和播放位置 */
-      var hasSavedState = savedTrack !== null && savedTrack !== undefined;
+      /* 根据保存的 URL 查找歌曲在当前播放顺序中的位置 */
+      function findTrackIndexByUrl(url) {
+        if (!url) return -1;
+        /* 先在 playlist 中找到实际索引 */
+        var actualIndex = -1;
+        for (var i = 0; i < playlist.length; i++) {
+          if (playlist[i].url === url) {
+            actualIndex = i;
+            break;
+          }
+        }
+        if (actualIndex === -1) return -1;
 
-      if (hasSavedState && parseInt(savedTrack) < playlist.length) {
-        var trackIndex = parseInt(savedTrack);
+        /* 再找到这个实际索引在当前播放顺序中的显示位置 */
+        var displayOrder = (playMode === 'random' && shuffledIndices.length > 0)
+          ? shuffledIndices
+          : defaultPlayOrder;
+
+        for (var j = 0; j < displayOrder.length; j++) {
+          if (displayOrder[j] === actualIndex) {
+            return j;
+          }
+        }
+        return 0;
+      }
+
+      /* 恢复歌曲和播放位置 */
+      var trackIndex = -1;
+
+      /* 优先使用 URL 查找（更可靠） */
+      if (savedTrackUrl) {
+        trackIndex = findTrackIndexByUrl(savedTrackUrl);
+      }
+
+      /* 如果 URL 查找失败，回退到索引（兼容旧数据） */
+      if (trackIndex === -1 && savedTrack !== null) {
+        trackIndex = parseInt(savedTrack);
+        if (trackIndex >= playlist.length) {
+          trackIndex = 0;
+        }
+      }
+
+      var hasSavedState = trackIndex >= 0;
+
+      if (hasSavedState) {
         loadTrack(trackIndex);
 
         /* 使用 Promise 链式处理恢复逻辑 */

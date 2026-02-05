@@ -6,8 +6,4 @@
   {% endif %}
 
   <a href="https://x.com/intent/post?text={{ page.title | url_encode }}%20{{ base_path }}{{ page.url }}" class="btn btn--x" title="{{ site.data.ui-text[site.locale].share_on_label | default: 'Share on' }} X"><i class="fab fa-x-twitter" aria-hidden="true"></i><span> X</span></a>
-
-  <a href="https://www.zhihu.com/question/waiting?redirect={{ base_path }}{{ page.url | url_encode }}" class="btn btn--zhihu" title="{{ site.data.ui-text[site.locale].share_on_label | default: 'Share on' }} 知乎"><i class="fab fa-zhihu" aria-hidden="true"></i><span> 知乎</span></a>
-
-  <a href="https://www.bilibili.com/" class="btn btn--bilibili" title="{{ site.data.ui-text[site.locale].share_on_label | default: 'Share on' }} B站"><i class="fab fa-bilibili" aria-hidden="true"></i><span> B站</span></a>
 </section>

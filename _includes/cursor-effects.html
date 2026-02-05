@@ -145,9 +145,9 @@
     cursorDot.style.transform = 'translate(-50%, -50%) scale(' + CONFIG.advanced.click_scale + ')';
     cursorOutline.style.transform = 'translate(-50%, -50%) scale(' + CONFIG.advanced.click_scale + ')';
 
-    /* 创建点击波纹（根据配置） */
+    /* 创建点击波纹（根据配置），使用光标点的当前位置而非鼠标实际位置 */
     if (CONFIG.ripple.enabled) {
-      createRipple(e.clientX, e.clientY);
+      createRipple(dotX, dotY);
     }
   });
 

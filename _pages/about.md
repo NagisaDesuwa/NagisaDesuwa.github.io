@@ -6,6 +6,7 @@ header:
   show_overlay_excerpt: false
 excerpt: "游戏设计师 | 创造有趣的游戏体验"
 author_profile: true
+sidebar_tags: true
 sidebar_archive: true
 redirect_from:
   - /about/

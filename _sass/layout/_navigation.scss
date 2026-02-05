@@ -192,6 +192,9 @@
   button {
     position: absolute;
     height: 2.5rem;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
     right: 0;
     padding: 0 0.5rem;
     border: 0;
@@ -201,15 +204,26 @@
     cursor: pointer;
     z-index: 100;
 
-    /* 移动端强制显示汉堡菜单按钮 */
+    /* 移动端强制显示汉堡菜单按钮，并移到左侧 */
     @media (max-width: $small) {
-      display: block !important;
+      display: flex !important;
       visibility: visible !important;
+      align-items: center;
+      justify-content: center;
+      right: auto;
+      left: 0;
+      pointer-events: auto !important;
+      min-width: 2.5rem;
     }
   }
 
   .visible-links {
     display: table;
+
+    /* 移动端为左侧汉堡菜单留出空间 */
+    @media (max-width: $small) {
+      padding-left: 2.5rem;
+    }
 
     li {
       display: table-cell;
@@ -218,6 +232,10 @@
       /* 移动端隐藏非 persist 的导航链接 */
       @media (max-width: $small) {
         &:not(.persist) {
+          display: none !important;
+        }
+        /* 移动端隐藏主题切换开关 */
+        &#theme-toggle {
           display: none !important;
         }
       }
@@ -284,6 +302,12 @@
     background: var(--global-bg-color);
     box-shadow: 0 0 10px rgba(#000, 0.25);
 
+    /* 移动端下拉菜单移到左侧 */
+    @media (max-width: $small) {
+      right: auto;
+      left: 0;
+    }
+
     a {
       margin: 0;
       padding: 10px 20px;
@@ -306,6 +330,12 @@
       border-color: var(--global-border-color) transparent;
       display: block;
       z-index: 0;
+
+      /* 移动端箭头移到左侧 */
+      @media (max-width: $small) {
+        right: auto;
+        left: 10px;
+      }
     }
 
     &:after {
@@ -319,6 +349,12 @@
       border-color: var(--global-bg-color) transparent;
       display: block;
       z-index: 1;
+
+      /* 移动端箭头移到左侧 */
+      @media (max-width: $small) {
+        right: auto;
+        left: 10px;
+      }
     }
 
     li {
