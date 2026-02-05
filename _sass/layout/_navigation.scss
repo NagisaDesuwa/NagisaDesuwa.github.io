@@ -177,6 +177,12 @@
   min-width: 250px;
   background: var(--global-bg-color);
 
+  /* 移动端使用 flex 布局 */
+  @media (max-width: $small) {
+    display: flex;
+    align-items: center;
+  }
+
   a {
     display: block;
     margin: 0 1rem;
@@ -206,23 +212,32 @@
 
     /* 移动端强制显示汉堡菜单按钮，并移到左侧 */
     @media (max-width: $small) {
+      position: relative !important;
       display: flex !important;
       visibility: visible !important;
       align-items: center;
       justify-content: center;
+      top: auto;
+      bottom: auto;
       right: auto;
-      left: 0;
+      left: auto;
+      margin: 0;
       pointer-events: auto !important;
-      min-width: 2.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      flex-shrink: 0;
+      order: -1;
     }
   }
 
   .visible-links {
     display: table;
 
-    /* 移动端为左侧汉堡菜单留出空间 */
+    /* 移动端使用 flex 布局，按钮已经是 relative 定位 */
     @media (max-width: $small) {
-      padding-left: 2.5rem;
+      display: flex;
+      align-items: center;
+      flex: 1;
     }
 
     li {
@@ -231,8 +246,12 @@
 
       /* 移动端隐藏非 persist 的导航链接 */
       @media (max-width: $small) {
-        &:not(.persist) {
-          display: none !important;
+        display: none !important;
+
+        /* 只显示首页标题 */
+        &.masthead__menu-item--lg {
+          display: flex !important;
+          align-items: center;
         }
         /* 移动端隐藏主题切换开关 */
         &#theme-toggle {
@@ -654,44 +673,30 @@
 
   /* 响应式设计 - 手机 (使用 max-width media query) */
   @media (max-width: 480px) {
-    /* 位置在汉堡菜单按钮左边 */
-    right: 2.2em !important;
+    /* 汉堡菜单已移到左侧，搜索框保持在右边 */
+    right: 0.5em !important;
 
     .search-container {
       margin-left: 0;
     }
 
     .search-input {
-      width: 0;
-      padding: 6px 0 6px 28px;
-      border: none;
-      background: transparent;
-
-      &::placeholder {
-        opacity: 0;
-      }
+      width: 100px;
+      padding: 6px 10px 6px 28px;
+      font-size: 12px;
 
       &:focus {
-        width: 130px;
-        padding: 6px 10px 6px 28px;
-        border: 1px solid var(--global-border-color);
-        background: var(--global-bg-color);
-
-        &::placeholder {
-          opacity: 1;
-        }
+        width: 120px;
       }
     }
 
     .search-icon {
-      cursor: pointer;
-      pointer-events: auto;
       left: 8px;
     }
 
     .search-results {
       width: calc(100vw - 2em);
-      right: -1.5em;
+      right: -0.5em;
     }
   }
 }

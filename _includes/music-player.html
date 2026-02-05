@@ -649,14 +649,8 @@
       };
       modeBtn.title = modeTitles[playMode];
 
-      /* 如果是随机模式，生成随机索引 */
-      if (playMode === 'random') {
-        generateShuffledIndices();
-      }
-
       /* 尝试恢复之前的播放状态 */
       var savedTrackUrl = localStorage.getItem('musicCurrentTrackUrl');
-      var savedTrack = localStorage.getItem('musicCurrentTrack');
       var savedTime = localStorage.getItem('musicCurrentTime');
       var savedVolume = localStorage.getItem('musicVolume');
       var wasPlaying = localStorage.getItem('musicWasPlaying') === 'true';
@@ -671,52 +665,56 @@
         volumeBar.value = 30;
       }
 
-      /* 根据保存的 URL 查找歌曲在当前播放顺序中的位置 */
-      function findTrackIndexByUrl(url) {
+      /* 通过 URL 在 playlist 中找到歌曲的实际索引 */
+      function findActualIndexByUrl(url) {
         if (!url) return -1;
-        /* 先在 playlist 中找到实际索引 */
-        var actualIndex = -1;
         for (var i = 0; i < playlist.length; i++) {
           if (playlist[i].url === url) {
-            actualIndex = i;
-            break;
+            return i;
           }
         }
-        if (actualIndex === -1) return -1;
+        return -1;
+      }
 
-        /* 再找到这个实际索引在当前播放顺序中的显示位置 */
-        var displayOrder = (playMode === 'random' && shuffledIndices.length > 0)
-          ? shuffledIndices
-          : defaultPlayOrder;
-
+      /* 在播放顺序中找到实际索引对应的显示位置 */
+      function findDisplayIndexByActual(actualIdx, displayOrder) {
         for (var j = 0; j < displayOrder.length; j++) {
-          if (displayOrder[j] === actualIndex) {
+          if (displayOrder[j] === actualIdx) {
             return j;
           }
         }
         return 0;
       }
 
-      /* 恢复歌曲和播放位置 */
-      var trackIndex = -1;
-
-      /* 优先使用 URL 查找（更可靠） */
+      /* 尝试恢复之前播放的歌曲 */
+      var actualIndex = -1;
       if (savedTrackUrl) {
-        trackIndex = findTrackIndexByUrl(savedTrackUrl);
+        actualIndex = findActualIndexByUrl(savedTrackUrl);
       }
 
-      /* 如果 URL 查找失败，回退到索引（兼容旧数据） */
-      if (trackIndex === -1 && savedTrack !== null) {
-        trackIndex = parseInt(savedTrack);
-        if (trackIndex >= playlist.length) {
-          trackIndex = 0;
-        }
-      }
-
-      var hasSavedState = trackIndex >= 0;
+      var hasSavedState = actualIndex >= 0;
 
       if (hasSavedState) {
-        loadTrack(trackIndex);
+        /* 找到了之前播放的歌曲，直接加载它 */
+        var track = playlist[actualIndex];
+
+        /* 如果是随机模式，生成随机索引 */
+        if (playMode === 'random') {
+          generateShuffledIndices();
+          /* 找到这首歌在随机顺序中的位置 */
+          currentTrack = findDisplayIndexByActual(actualIndex, shuffledIndices);
+        } else {
+          /* 顺序模式，找到在 defaultPlayOrder 中的位置 */
+          currentTrack = findDisplayIndexByActual(actualIndex, defaultPlayOrder);
+        }
+
+        /* 直接设置音频源和 UI，不通过 loadTrack 避免索引转换问题 */
+        audio.src = encodeAudioUrl(track.url);
+        songTitle.textContent = track.title;
+        songArtist.textContent = track.artist || '';
+        loadRetryCount = 0;
+        renderPlaylist();
+        window.musicPlayerReady = true;
 
         /* 使用 Promise 链式处理恢复逻辑 */
         var restoreAttempted = false;
@@ -732,17 +730,16 @@
 
           /* 如果之前正在播放，继续播放 */
           if (wasPlaying) {
-            /* 立即尝试播放，不延迟 */
             audio.play().then(function() {
               playBtn.textContent = '⏸';
-              console.log('✅ 成功恢复音乐播放 -', playlist[getActualIndex(trackIndex)].title);
+              console.log('✅ 成功恢复音乐播放 -', track.title, '@ ' + formatTime(parseFloat(savedTime || 0)));
             }).catch(function(error) {
               console.log('⚠️ 恢复播放失败（可能需要用户交互）:', error);
               playBtn.textContent = '▶';
             });
           } else {
             playBtn.textContent = '▶';
-            console.log('✅ 恢复音乐状态（暂停中）-', playlist[getActualIndex(trackIndex)].title);
+            console.log('✅ 恢复音乐状态（暂停中）-', track.title);
           }
         };
 
@@ -755,11 +752,17 @@
         }
       } else {
         /* 首次访问或没有保存状态，加载默认播放列表的第一首歌（あの頃のように） */
+
+        /* 如果是随机模式，生成随机索引 */
+        if (playMode === 'random') {
+          generateShuffledIndices();
+        }
+
         currentTrack = 0;
         loadTrack(currentTrack);
         playBtn.textContent = '▶';
-        var actualIndex = getActualIndex(currentTrack);
-        console.log('🎵 音乐播放器已准备就绪，默认歌曲：' + playlist[actualIndex].title);
+        var defaultActualIndex = getActualIndex(currentTrack);
+        console.log('🎵 音乐播放器已准备就绪，默认歌曲：' + playlist[defaultActualIndex].title);
 
         /* 标记播放器已准备好，供入口大门使用 */
         window.musicPlayerReady = true;
