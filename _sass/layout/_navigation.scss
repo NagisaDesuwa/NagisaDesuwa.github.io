@@ -200,11 +200,9 @@
     color: var(--global-text-color);
     cursor: pointer;
     z-index: 100;
-  }
 
-  /* 移动端强制显示汉堡菜单按钮 */
-  @media (max-width: $small) {
-    button {
+    /* 移动端强制显示汉堡菜单按钮 */
+    @media (max-width: $small) {
       display: block !important;
       visibility: visible !important;
     }
