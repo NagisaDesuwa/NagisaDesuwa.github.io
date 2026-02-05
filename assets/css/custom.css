@@ -3,6 +3,21 @@
    ======================================== */
 
 /* ========================================
+   全局防溢出设置
+   ======================================== */
+
+html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+/* 防止长 URL 和单词溢出 */
+body {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* ========================================
    网站入口大门效果
    ======================================== */
 
@@ -1219,99 +1234,7 @@ body {
    侧边栏响应式优化
    ======================================== */
 
-/* 平板以下隐藏固定侧边栏，改为顶部水平布局 */
-@media (max-width: 768px) {
-    .sidebar {
-        position: relative !important;
-        width: 100% !important;
-        height: auto !important;
-        padding-top: 0 !important;
-        overflow: visible !important;
-        margin-bottom: 1.5rem;
-    }
-
-    /* 作者信息水平排列 */
-    .author__avatar {
-        display: inline-block;
-        vertical-align: middle;
-        width: 60px;
-        margin-right: 1rem;
-    }
-
-    .author__avatar img {
-        max-width: 60px;
-    }
-
-    .author__content {
-        display: inline-block;
-        vertical-align: middle;
-        padding-left: 0;
-    }
-
-    .author__urls-wrapper {
-        display: block;
-        margin-top: 1rem;
-    }
-
-    .author__urls {
-        display: flex !important;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        position: relative;
-        margin: 0;
-        padding: 0;
-        border: none;
-        background: transparent;
-        box-shadow: none;
-    }
-
-    .author__urls::before,
-    .author__urls::after {
-        display: none !important;
-    }
-
-    .author__urls li {
-        margin: 0;
-    }
-
-    .author__urls a {
-        font-size: 0.9em;
-        padding: 0.25rem 0.5rem;
-        background: var(--global-bg-color);
-        border: 1px solid var(--global-border-color);
-        border-radius: 4px;
-        margin: 0;
-    }
-
-    /* 隐藏展开按钮 */
-    .author__urls-wrapper button {
-        display: none;
-    }
-}
-
-/* 小手机进一步优化 */
-@media (max-width: 480px) {
-    .author__avatar {
-        width: 50px;
-    }
-
-    .author__avatar img {
-        max-width: 50px;
-    }
-
-    .author__urls a {
-        font-size: 0.8em;
-        padding: 0.2rem 0.4rem;
-    }
-
-    .sidebar .author__name {
-        font-size: 1rem;
-    }
-
-    .author__bio {
-        font-size: 0.85em;
-    }
-}
+/* 注意：移动端侧边栏的详细样式在下面的"手机端侧边栏优化（增强版）"部分 */
 
 /* ========================================
    导航栏响应式
@@ -1947,7 +1870,7 @@ body {
     }
 
     /* 作者头像区域 - 居中显示 */
-    .author__avatar {
+    .sidebar .author__avatar {
         float: none !important;
         display: block !important;
         width: auto !important;
@@ -1955,10 +1878,11 @@ body {
         text-align: center;
     }
 
-    .author__avatar img {
+    .sidebar .author__avatar img {
         width: 80px !important;
         height: 80px !important;
         max-width: 80px !important;
+        min-width: 80px !important;
         border-radius: 50%;
         padding: 2px;
         border: 2px solid var(--global-border-color);
@@ -1966,7 +1890,7 @@ body {
     }
 
     /* 作者内容区域 - 居中显示 */
-    .author__content {
+    .sidebar .author__content {
         display: block !important;
         width: 100% !important;
         overflow: visible;
@@ -1974,12 +1898,12 @@ body {
         text-align: center;
     }
 
-    .author__name {
+    .sidebar .author__name {
         font-size: 1.2em;
         margin: 0 0 0.2em 0 !important;
     }
 
-    .author__bio {
+    .sidebar .author__bio {
         font-size: 0.9em;
         line-height: 1.4;
         margin: 0 !important;
@@ -1987,7 +1911,7 @@ body {
     }
 
     /* 社交链接区域 - 居中显示 */
-    .author__urls-wrapper {
+    .sidebar .author__urls-wrapper {
         display: block !important;
         width: 100%;
         clear: both;
@@ -1996,7 +1920,7 @@ body {
         border-top: 1px solid var(--global-border-color);
     }
 
-    .author__urls {
+    .sidebar .author__urls {
         display: flex !important;
         flex-wrap: wrap;
         justify-content: center !important;
@@ -2011,17 +1935,17 @@ body {
         box-shadow: none;
     }
 
-    .author__urls::before,
-    .author__urls::after {
+    .sidebar .author__urls::before,
+    .sidebar .author__urls::after {
         display: none !important;
     }
 
-    .author__urls li {
+    .sidebar .author__urls li {
         margin: 0;
         list-style: none;
     }
 
-    .author__urls li a {
+    .sidebar .author__urls li a {
         display: inline-flex;
         align-items: center;
         gap: 0.3em;
@@ -2036,18 +1960,18 @@ body {
         min-height: 32px;
     }
 
-    .author__urls li a:hover {
+    .sidebar .author__urls li a:hover {
         background: var(--global-primary-color);
         color: var(--global-contrast-text-color);
         border-color: var(--global-primary-color);
     }
 
-    .author__urls li a i {
+    .sidebar .author__urls li a i {
         font-size: 0.9em;
     }
 
     /* 隐藏展开按钮 */
-    .author__urls-wrapper > button {
+    .sidebar .author__urls-wrapper > button {
         display: none !important;
     }
 
@@ -2104,22 +2028,23 @@ body {
         padding: 0.75em;
     }
 
-    .author__avatar img {
+    .sidebar .author__avatar img {
         width: 70px !important;
         height: 70px !important;
         max-width: 70px !important;
+        min-width: 70px !important;
         object-fit: cover;
     }
 
-    .author__name {
+    .sidebar .author__name {
         font-size: 1.1em;
     }
 
-    .author__bio {
+    .sidebar .author__bio {
         font-size: 0.85em;
     }
 
-    .author__urls li a {
+    .sidebar .author__urls li a {
         padding: 0.35em 0.6em;
         font-size: 0.8em;
         min-height: 30px;
@@ -2511,5 +2436,29 @@ img[loading="lazy"] {
     .music-player,
     .toc {
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* ========================================
+   Default Archive 布局响应式
+   ======================================== */
+
+.default-archive {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2em;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .default-archive {
+        padding: 1.5em 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .default-archive {
+        padding: 1em 0.75em;
     }
 }
