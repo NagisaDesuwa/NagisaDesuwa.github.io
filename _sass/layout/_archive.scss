@@ -597,3 +597,70 @@
   background: var(--global-primary-color-light);
   border-radius: 4px;
 }
+
+/*
+   Tag Menu (sidebar tag cloud)
+   ========================================================================== */
+
+.tag-menu {
+  margin-top: 1.5em;
+  padding-top: 1em;
+  border-top: 1px solid var(--global-border-color);
+}
+
+.tag-menu__title {
+  font-size: $type-size-5;
+  font-weight: 700;
+  margin: 0 0 0.75em;
+  color: var(--global-text-color);
+
+  i {
+    margin-right: 0.3em;
+    color: var(--global-primary-color);
+  }
+}
+
+.tag-menu__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.tag-menu__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.35em 0.7em;
+  background: var(--global-background-color-alt);
+  border: 1px solid var(--global-border-color);
+  border-radius: 20px;
+  color: var(--global-text-color);
+  text-decoration: none;
+  font-size: $type-size-6;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--global-primary-color);
+    color: var(--global-contrast-text-color);
+    border-color: var(--global-primary-color);
+
+    .tag-menu__count {
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--global-contrast-text-color);
+    }
+  }
+}
+
+.tag-menu__name {
+  font-weight: 500;
+}
+
+.tag-menu__count {
+  font-size: $type-size-7;
+  padding: 0.1em 0.4em;
+  background: var(--global-primary-color-light);
+  color: var(--global-primary-color);
+  border-radius: 10px;
+  min-width: 1.2em;
+  text-align: center;
+}

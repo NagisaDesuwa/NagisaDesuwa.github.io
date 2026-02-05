@@ -50,12 +50,7 @@ body.page-show {
     height: 100dvh; /* 动态视口高度，解决移动端地址栏问题 */
     min-height: 100%;
     z-index: 99999;
-    background-image: url('/images/banner.jpg');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: scroll; /* 移动端不支持 fixed */
-    -webkit-background-size: cover;
+    background-color: #1a1a2e; /* 图片加载前的占位背景色 */
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -63,6 +58,26 @@ body.page-show {
     overflow: hidden;
     opacity: 1;
     transition: opacity 1s ease-in-out;
+}
+
+/* 使用真实 img 元素作为背景，避免移动端内存释放问题 */
+.gate-bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    z-index: 0;
+    /* 防止移动端浏览器释放图片内存 */
+    will-change: transform;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    /* 防止用户拖动图片 */
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 .entrance-gate.fade-out {
@@ -151,10 +166,10 @@ body.page-show {
 
 /* 响应式设计 - 入口大门 */
 @media (max-width: 768px) {
-    .entrance-gate {
-        background-size: cover;
-        background-position: center center;
-        -webkit-background-size: cover;
+    .gate-bg-img {
+        /* 移动端使用更激进的 GPU 加速来防止图片丢失 */
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
     }
 
     .gate-title {
@@ -171,12 +186,6 @@ body.page-show {
 }
 
 @media (max-width: 480px) {
-    .entrance-gate {
-        background-size: cover;
-        background-position: center center;
-        -webkit-background-size: cover;
-    }
-
     .gate-title {
         font-size: 1.8em;
     }
@@ -642,8 +651,19 @@ html {
     gap: 8px;
 }
 
-.volume-container span {
+.mute-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
     font-size: 14px;
+    padding: 0;
+    line-height: 1;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.mute-btn:hover {
+    transform: scale(1.15);
+    opacity: 0.8;
 }
 
 /* 播放列表面板 */
@@ -893,18 +913,17 @@ body.cursor-arrow-enhanced {
     background: radial-gradient(circle, rgba(65, 105, 225, 0.4) 0%, rgba(135, 206, 250, 0) 70%);
     pointer-events: none;
     z-index: 99997;
+    transform: translate(-50%, -50%) scale(0);
     animation: ripple 0.8s ease-out forwards;
 }
 
 @keyframes ripple {
     from {
-        width: 0;
-        height: 0;
+        transform: translate(-50%, -50%) scale(0);
         opacity: 1;
     }
     to {
-        width: 100px;
-        height: 100px;
+        transform: translate(-50%, -50%) scale(1);
         opacity: 0;
     }
 }

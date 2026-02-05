@@ -1,0 +1,33 @@
+{% include base_path %}
+
+{% assign all_tags = "" | split: "" %}
+{% for post in site.posts %}
+  {% for tag in post.tags %}
+    {% unless all_tags contains tag %}
+      {% assign all_tags = all_tags | push: tag %}
+    {% endunless %}
+  {% endfor %}
+{% endfor %}
+{% assign all_tags = all_tags | sort_natural %}
+
+{% if all_tags.size > 0 %}
+<div class="tag-menu">
+  <h4 class="tag-menu__title">
+    <i class="fa fa-tags" aria-hidden="true"></i> 标签
+  </h4>
+  <div class="tag-menu__list">
+    {% for tag in all_tags %}
+      {% assign tag_count = 0 %}
+      {% for post in site.posts %}
+        {% if post.tags contains tag %}
+          {% assign tag_count = tag_count | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+      <a href="{{ base_path }}/tags/#{{ tag | slugify }}" class="tag-menu__item">
+        <span class="tag-menu__name">{{ tag }}</span>
+        <span class="tag-menu__count">{{ tag_count }}</span>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}

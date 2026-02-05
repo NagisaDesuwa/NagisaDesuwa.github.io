@@ -194,8 +194,8 @@
     ripple.style.width = CONFIG.ripple.size + 'px';
     ripple.style.height = CONFIG.ripple.size + 'px';
     ripple.style.border = '2px solid ' + CONFIG.ripple.color;
-    ripple.style.left = (x - CONFIG.ripple.size / 2) + 'px';
-    ripple.style.top = (y - CONFIG.ripple.size / 2) + 'px';
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
     document.body.appendChild(ripple);
 
     setTimeout(function() {

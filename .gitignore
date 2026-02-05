@@ -23,3 +23,5 @@ package-lock.json
 .DS_Store
 start-server.bat
 .claude/settings.local.json
+nul
+.gitignore

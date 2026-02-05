@@ -1,5 +1,11 @@
 <!-- 网站入口大门效果 -->
+<!-- 预加载 banner 图片 -->
+<link rel="preload" as="image" href="/images/banner.jpg" media="(min-width: 769px)">
+<link rel="preload" as="image" href="/images/banner-mobile.jpg" media="(max-width: 768px)">
+
 <div id="entrance-gate" class="entrance-gate">
+  <!-- 使用真实 img 元素作为背景，避免移动端内存释放问题 -->
+  <img id="gate-bg-img" class="gate-bg-img" src="/images/banner.jpg" alt="" loading="eager" decoding="async" />
   <div class="gate-content">
     <h1 class="gate-title">欢迎来到Nagisa的世界</h1>
     <div class="gate-subtitle">点击任意位置进入</div>
@@ -11,6 +17,56 @@
 <script>
 (function() {
   console.log('🚪 入口大门脚本开始执行');
+
+  /* 响应式图片：移动端使用小图 */
+  var bgImg = document.getElementById('gate-bg-img');
+  var isMobile = window.innerWidth <= 768;
+  var desktopSrc = '/images/banner.jpg';
+  var mobileSrc = '/images/banner-mobile.jpg';
+
+  function setResponsiveImage() {
+    if (!bgImg) return;
+    var newIsMobile = window.innerWidth <= 768;
+    var targetSrc = newIsMobile ? mobileSrc : desktopSrc;
+
+    /* 检查移动端图片是否存在，不存在则使用桌面版 */
+    if (newIsMobile) {
+      var testImg = new Image();
+      testImg.onload = function() {
+        bgImg.src = mobileSrc;
+      };
+      testImg.onerror = function() {
+        bgImg.src = desktopSrc;
+      };
+      testImg.src = mobileSrc;
+    } else {
+      bgImg.src = desktopSrc;
+    }
+  }
+
+  /* 初始设置响应式图片 */
+  setResponsiveImage();
+
+  /* 监听窗口大小变化 */
+  var resizeTimeout;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(setResponsiveImage, 150);
+  });
+
+  /* 修复移动端切换应用后图片丢失问题 */
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible' && bgImg) {
+      /* 强制重新加载图片 */
+      var currentSrc = bgImg.src;
+      bgImg.src = '';
+      /* 使用 setTimeout 确保浏览器有时间处理 */
+      setTimeout(function() {
+        bgImg.src = currentSrc;
+      }, 10);
+      console.log('📷 页面恢复可见，重新加载背景图片');
+    }
+  });
 
   /* 检查是否在同一浏览器会话中已访问过 */
   var hasVisited = sessionStorage.getItem('hasVisited');
