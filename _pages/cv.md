@@ -52,4 +52,4 @@ redirect_from:
 
 * QQ: 564399671
 * B站: [https://space.bilibili.com/5506729](https://space.bilibili.com/5506729)
-* 邮箱: outlook.com
+* 邮箱: tabrisnagisa@outlook.com
