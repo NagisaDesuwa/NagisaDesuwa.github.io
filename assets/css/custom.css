@@ -446,6 +446,28 @@ html {
     background: #87CEFA;
 }
 
+/* 代码块横向滚动条 */
+div.highlighter-rouge pre::-webkit-scrollbar,
+figure.highlight pre::-webkit-scrollbar {
+    height: 4px;
+}
+
+div.highlighter-rouge pre::-webkit-scrollbar-track,
+figure.highlight pre::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+div.highlighter-rouge pre::-webkit-scrollbar-thumb,
+figure.highlight pre::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #4169E1 0%, #87CEFA 100%);
+    border-radius: 2px;
+}
+
+div.highlighter-rouge pre::-webkit-scrollbar-thumb:hover,
+figure.highlight pre::-webkit-scrollbar-thumb:hover {
+    background: #87CEFA;
+}
+
 /* 页面加载动画 */
 .page-content {
     animation: fadeIn 0.8s ease-in;
