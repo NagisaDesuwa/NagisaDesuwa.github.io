@@ -6,7 +6,7 @@ layout: null
  * Provides offline support and caching for PWA
  */
 
-var CACHE_NAME = 'nagisa-cache-v1';
+var CACHE_NAME = 'nagisa-cache-v2';
 var OFFLINE_URL = '/offline.html';
 
 /* Assets to cache on install */
