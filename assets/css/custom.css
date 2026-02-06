@@ -1740,25 +1740,36 @@ body {
    ======================================== */
 
 /* .page__related 在 SCSS 中设置了 float:left 但没有宽度，导致容器收缩到极窄 */
+/* 同时 single.html 嵌套在 default.html 的 .archive 容器中进一步压缩空间 */
 .page__related {
     float: none !important;
     clear: both;
-    width: 100%;
+    width: auto !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }
 
 .page__related .grid__wrapper {
     display: flex;
     flex-wrap: wrap;
+    margin: 0;
 }
 
 .page__related .grid__item {
-    flex: 0 0 25%;
-    max-width: 25%;
+    flex: 0 0 50%;
+    max-width: 50%;
     float: none !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
     box-sizing: border-box;
-    padding: 0 0.5em;
+    padding: 0 0.75em;
+}
+
+@media (min-width: 769px) {
+    .page__related .grid__item {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
 }
 
 /* ========================================
