@@ -1736,40 +1736,49 @@ body {
 }
 
 /* ========================================
-   相关文章区域桌面端布局修复
+   相关文章简洁列表样式
    ======================================== */
 
-/* .page__related 在 SCSS 中设置了 float:left 但没有宽度，导致容器收缩到极窄 */
-/* 同时 single.html 嵌套在 default.html 的 .archive 容器中进一步压缩空间 */
 .page__related {
+    margin-top: 2em;
+    padding-top: 1.5em;
+    border-top: 1px solid var(--global-border-color);
     float: none !important;
-    clear: both;
     width: auto !important;
     margin-left: 0 !important;
-    margin-right: 0 !important;
 }
 
-.page__related .grid__wrapper {
-    display: flex;
-    flex-wrap: wrap;
+.related-posts-list {
+    list-style: none;
+    padding: 0;
     margin: 0;
 }
 
-.page__related .grid__item {
-    flex: 0 0 50%;
-    max-width: 50%;
-    float: none !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    box-sizing: border-box;
-    padding: 0 0.75em;
+.related-posts-list li {
+    padding: 0.5em 0;
+    border-bottom: 1px solid var(--global-border-color);
 }
 
-@media (min-width: 769px) {
-    .page__related .grid__item {
-        flex: 0 0 25%;
-        max-width: 25%;
-    }
+.related-posts-list li:last-child {
+    border-bottom: none;
+}
+
+.related-posts-list a {
+    color: var(--global-text-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.related-posts-list a:hover {
+    color: var(--global-primary-color);
+    text-decoration: underline;
+}
+
+.related-posts-list .post-date {
+    display: block;
+    color: var(--global-text-color-light);
+    font-size: 0.8em;
+    margin-top: 0.2em;
 }
 
 /* ========================================
