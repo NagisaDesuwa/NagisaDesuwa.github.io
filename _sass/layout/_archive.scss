@@ -351,6 +351,15 @@
   margin-top: 0;
   margin-bottom: 0.25em;
   font-size: $type-size-5;
+
+  a {
+    color: var(--global-text-color);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--global-primary-color);
+    }
+  }
 }
 
 .timeline__item .archive__item-excerpt {
