@@ -2,7 +2,7 @@
 title: "Spine导入Unity需要注意的几个问题"
 date: 2026-02-08
 categories: [开发]
-tags: [Unity, Spine]
+tags: [博客, Unity, Spine]
 ---
 
 尝试在项目中导入Spine，但是Spine导入进Unity后，出现了各种各样的问题：
