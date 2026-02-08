@@ -1286,10 +1286,12 @@ body {
         line-height: 1.7;
     }
 
-    /* 图片响应式 */
+    /* 图片响应式 + 居中 */
     .page__content img {
+        display: block;
         max-width: 100%;
         height: auto;
+        margin: 1em auto;
     }
 
     /* 代码块响应式 */

@@ -17,7 +17,7 @@ Spine对应的文件：
 ```
 需要在文件后缀名再加上.txt的后缀名，才能被Unity正确显示。
 
-<p align="center">![alt text](../assets/images/posts/image.png)</p>
+![alt text](/assets/images/posts/image.png)
 
 可以看到，Spine的预览窗口中的渲染肯定是有问题的。
 
@@ -26,12 +26,12 @@ Spine对应的文件：
 
 再接下来，发现Spine材质出现虚影
 
-<p align="center">![alt text](../assets/images/posts/image-2.png)</p>
+![alt text](/assets/images/posts/image-2.png)
 
 原因是Spine的材质设置错误，需要在材质上勾选Straight Alpha Texture.
 
-<p align="center">![alt text](../assets/images/posts/image-3.png)</p>
+![alt text](/assets/images/posts/image-3.png)
 
 至此，Spine修复全部正常。
 
-<p align="center">![alt text](../assets/images/posts/image-4.png)</p>
+![alt text](/assets/images/posts/image-4.png)
